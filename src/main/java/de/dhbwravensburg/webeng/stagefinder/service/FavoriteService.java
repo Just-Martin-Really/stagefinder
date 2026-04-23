@@ -1,5 +1,7 @@
 package de.dhbwravensburg.webeng.stagefinder.service;
 
+import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.SetlistFmService;
+import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.SfmArtist;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.FavoriteNoteRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.FavoriteRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.FavoriteResponse;
@@ -23,6 +25,7 @@ public class FavoriteService {
     private final FavoriteRepository favoriteRepository;
     private final UserRepository userRepository;
     private final ArtistService artistService;
+    private final SetlistFmService setlistFmService;
 
     public List<FavoriteResponse> findByUser(Long userId) {
         getUserOrThrow(userId);
@@ -32,8 +35,9 @@ public class FavoriteService {
     @Transactional
     public FavoriteResponse add(Long userId, FavoriteRequest request) {
         User user = getUserOrThrow(userId);
-        // Artist is resolved via setlist.fm in M3; for now we require it to already exist locally.
-        Artist artist = artistService.findOrCreate(request.getMbid(), request.getMbid(), null, null);
+        // Resolve artist metadata from setlist.fm, then upsert locally.
+        SfmArtist sfm = setlistFmService.getArtist(request.getMbid());
+        Artist artist = artistService.findOrCreate(sfm.getMbid(), sfm.getName(), sfm.getSortName(), sfm.getUrl());
 
         if (favoriteRepository.existsByUserIdAndArtistId(userId, artist.getId())) {
             throw new ConflictException("Artist already in favorites");
