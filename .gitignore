@@ -31,7 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
-/.github/copilot-instructions.md
+
+### Claude Code ###
+.claude/
+
+### GitHub (keep workflows, ignore local overrides) ###
+.github/copilot-instructions.md
 
 # Local environment secrets
 .env
