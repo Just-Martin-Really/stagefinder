@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+/.github/copilot-instructions.md
+
+# Local environment secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+/.env.*
