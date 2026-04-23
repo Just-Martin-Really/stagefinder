@@ -149,15 +149,14 @@ RUN_SETLISTFM_LIVE_TESTS=true ./mvnw -Dtest=SetlistFmLiveIntegrationTest test
 
 ## Docker
 
-Build and start the backend:
+The Docker build compiles the React frontend and bundles it into the Spring Boot jar — one container serves everything.
 
 ```zsh
 cp .env.example .env   # set SETLISTFM_API_KEY
 docker compose up --build
 ```
 
-Backend will be available at **http://localhost:8080**.  
-Run the frontend separately with `npm run dev` in the `frontend/` directory.
+Open **http://localhost:8080** — frontend and API both served from there.
 
 ---
 
