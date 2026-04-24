@@ -26,6 +26,16 @@
 
 /* ─── Hero ──────────────────────────────────────────────────────────────── */
 
+/* Strip MkDocs column constraints on any page that contains a hero */
+.md-grid:has(.sf-hero),
+.md-main__inner:has(.sf-hero),
+.md-content:has(.sf-hero),
+.md-content__inner:has(.sf-hero) {
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 .sf-hero {
   position: relative;
   overflow: hidden;
@@ -36,11 +46,7 @@
   min-height: 90vh;
   text-align: center;
   padding: 4rem 2rem 8rem;
-
-  /* Break out of MkDocs content column to fill the full viewport width */
-  width: 100vw;
-  margin-left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
 }
 
 /* Neon blobs */
