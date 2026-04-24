@@ -1,13 +1,12 @@
 ---
-title: Stagefinder
 hide:
   - navigation
   - toc
 ---
 
 <div class="sf-hero">
-  <div class="sf-blob sf-blob--purple"></div>
-  <div class="sf-blob sf-blob--cyan"></div>
+  <div class="sf-blob sf-blob--purple"><div class="sf-blob__inner"></div></div>
+  <div class="sf-blob sf-blob--cyan"><div class="sf-blob__inner"></div></div>
   <div class="sf-grid"></div>
   <div class="sf-hero__content">
     <p class="sf-hero__title">Stagefinder</p>
