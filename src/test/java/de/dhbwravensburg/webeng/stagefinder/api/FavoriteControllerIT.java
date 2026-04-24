@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -20,6 +21,7 @@ import tools.jackson.databind.ObjectMapper;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,16 +29,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class FavoriteControllerIT {
 
-    @Autowired
-    WebApplicationContext context;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    FavoriteRepository favoriteRepository;
-    @Autowired
-    ArtistRepository artistRepository;
-    @Autowired
-    ObjectMapper objectMapper;
+    @Autowired WebApplicationContext context;
+    @Autowired UserRepository userRepository;
+    @Autowired FavoriteRepository favoriteRepository;
+    @Autowired ArtistRepository artistRepository;
+    @Autowired ObjectMapper objectMapper;
 
     @MockitoBean
     SetlistFmClient setlistFmClient;
@@ -45,7 +42,9 @@ class FavoriteControllerIT {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(springSecurity())
+                .build();
         favoriteRepository.deleteAll();
         artistRepository.deleteAll();
         userRepository.deleteAll();
@@ -63,6 +62,7 @@ class FavoriteControllerIT {
         UserRequest req = new UserRequest();
         req.setUsername(username);
         req.setEmail(email);
+        req.setPassword("securepass");
 
         String body = mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -74,6 +74,7 @@ class FavoriteControllerIT {
     }
 
     @Test
+    @WithMockUser(username = "fan1")
     void addFavorite_returns201WithArtistData() throws Exception {
         Long userId = createUser("fan1", "fan1@example.com");
 
@@ -91,6 +92,7 @@ class FavoriteControllerIT {
     }
 
     @Test
+    @WithMockUser(username = "fan2")
     void addFavorite_duplicate_returns409() throws Exception {
         Long userId = createUser("fan2", "fan2@example.com");
 
@@ -109,6 +111,7 @@ class FavoriteControllerIT {
     }
 
     @Test
+    @WithMockUser(username = "fan3")
     void getFavorites_returnsUserFavorites() throws Exception {
         Long userId = createUser("fan3", "fan3@example.com");
 
@@ -127,6 +130,7 @@ class FavoriteControllerIT {
     }
 
     @Test
+    @WithMockUser(username = "fan4")
     void removeFavorite_returns204() throws Exception {
         Long userId = createUser("fan4", "fan4@example.com");
 
@@ -146,5 +150,20 @@ class FavoriteControllerIT {
 
         mockMvc.perform(get("/api/users/" + userId + "/favorites"))
                 .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    @WithMockUser(username = "intruder")
+    void getFavorites_wrongOwner_returns403() throws Exception {
+        Long userId = createUser("fan5", "fan5@example.com");
+
+        mockMvc.perform(get("/api/users/" + userId + "/favorites"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void getFavorites_unauthenticated_returns401() throws Exception {
+        mockMvc.perform(get("/api/users/1/favorites"))
+                .andExpect(status().isUnauthorized());
     }
 }

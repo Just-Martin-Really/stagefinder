@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -39,7 +40,7 @@ class FavoriteServiceTest {
 
     private User stubUser() {
         return User.builder().id(1L).username("alice").email("alice@example.com")
-                .createdAt(LocalDateTime.now()).build();
+                .passwordHash("$2a$hashed").createdAt(LocalDateTime.now()).build();
     }
 
     private Artist stubArtist() {
@@ -70,10 +71,19 @@ class FavoriteServiceTest {
         when(favoriteRepository.save(any())).thenReturn(saved);
         when(artistService.toResponse(artist)).thenCallRealMethod();
 
-        FavoriteResponse response = favoriteService.add(1L, req);
+        FavoriteResponse response = favoriteService.add(1L, req, "alice");
 
         assertThat(response.getId()).isEqualTo(100L);
         assertThat(response.getNote()).isEqualTo("love them");
+    }
+
+    @Test
+    void add_wrongOwner_throwsAccessDenied() {
+        User user = stubUser();
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+
+        assertThatThrownBy(() -> favoriteService.add(1L, new FavoriteRequest(), "bob"))
+                .isInstanceOf(AccessDeniedException.class);
     }
 
     @Test
@@ -93,7 +103,7 @@ class FavoriteServiceTest {
         when(artistService.findOrCreate("abc-123", "Metallica", null, null)).thenReturn(artist);
         when(favoriteRepository.existsByUserIdAndArtistId(1L, 10L)).thenReturn(true);
 
-        assertThatThrownBy(() -> favoriteService.add(1L, req))
+        assertThatThrownBy(() -> favoriteService.add(1L, req, "alice"))
                 .isInstanceOf(ConflictException.class);
     }
 
@@ -103,7 +113,7 @@ class FavoriteServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(favoriteRepository.findById(999L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> favoriteService.remove(1L, 999L))
+        assertThatThrownBy(() -> favoriteService.remove(1L, 999L, "alice"))
                 .isInstanceOf(NotFoundException.class);
     }
 
@@ -123,7 +133,7 @@ class FavoriteServiceTest {
         when(favoriteRepository.save(any())).thenReturn(favorite);
         when(artistService.toResponse(artist)).thenCallRealMethod();
 
-        FavoriteResponse response = favoriteService.updateNote(1L, 100L, req);
+        FavoriteResponse response = favoriteService.updateNote(1L, 100L, req, "alice");
 
         assertThat(response).isNotNull();
         verify(favoriteRepository).save(favorite);
@@ -133,7 +143,7 @@ class FavoriteServiceTest {
     void findByUser_userNotFound_throwsNotFoundException() {
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> favoriteService.findByUser(99L))
+        assertThatThrownBy(() -> favoriteService.findByUser(99L, "anyone"))
                 .isInstanceOf(NotFoundException.class);
     }
 }

@@ -2,24 +2,58 @@
 
 > All endpoints are served at `http://localhost:8080`. Interactive docs at `/swagger-ui.html`.
 
+Most endpoints require authentication — send requests with a valid session cookie obtained via `POST /api/auth/login`.
+
 ---
 
-## Users
+## Authentication
 
-| Method | Path | Status | Description |
-|--------|------|--------|-------------|
-| `GET` | `/api/users` | 200 | List all users |
-| `GET` | `/api/users/{id}` | 200 / 404 | Get user by ID |
-| `POST` | `/api/users` | 201 | Create a user |
-| `PUT` | `/api/users/{id}` | 200 / 404 | Replace user |
-| `DELETE` | `/api/users/{id}` | 204 / 404 | Delete user |
+| Method | Path | Auth | Status | Description |
+|--------|------|------|--------|-------------|
+| `POST` | `/api/auth/login` | — | 200 / 401 | Log in, receive session cookie |
+| `GET` | `/api/auth/me` | required | 200 / 401 | Get current user |
+| `POST` | `/api/auth/logout` | required | 204 | Invalidate session |
 
-### Request body — create / update user
+### Request body — login
 
 ```json
 {
   "username": "martin",
-  "email": "martin@example.com"
+  "password": "securepass"
+}
+```
+
+### Response — login / me
+
+```json
+{
+  "id": 1,
+  "username": "martin",
+  "email": "martin@example.com",
+  "createdAt": "2025-03-01T10:00:00"
+}
+```
+
+On success, the server sets a `JSESSIONID` cookie. Include it in subsequent requests. The session lasts 24 hours.
+
+---
+
+## Users
+
+| Method | Path | Auth | Status | Description |
+|--------|------|------|--------|-------------|
+| `POST` | `/api/users` | — | 201 | Register a new user |
+| `GET` | `/api/users/{id}` | required | 200 / 401 / 404 | Get user by ID |
+| `PUT` | `/api/users/{id}` | required (owner) | 200 / 401 / 403 / 404 | Update user |
+| `DELETE` | `/api/users/{id}` | required (owner) | 204 / 401 / 403 / 404 | Delete user |
+
+### Request body — register / update user
+
+```json
+{
+  "username": "martin",
+  "email": "martin@example.com",
+  "password": "securepass"
 }
 ```
 
@@ -27,6 +61,7 @@
 |-------|------|-------------|
 | `username` | string | 3–50 characters, required |
 | `email` | string | valid email format, required |
+| `password` | string | 8–100 characters, required |
 
 ### Response — user
 
@@ -34,20 +69,24 @@
 {
   "id": 1,
   "username": "martin",
-  "email": "martin@example.com"
+  "email": "martin@example.com",
+  "createdAt": "2025-03-01T10:00:00"
 }
 ```
+
+!!! warning "Ownership"
+    `PUT` and `DELETE` on a user resource require the authenticated session to belong to that user. A different user receives `403 Forbidden`.
 
 ---
 
 ## Favorites
 
-| Method | Path | Status | Description |
-|--------|------|--------|-------------|
-| `GET` | `/api/users/{userId}/favorites` | 200 | List user's favorites |
-| `POST` | `/api/users/{userId}/favorites` | 201 | Add a favorite |
-| `PATCH` | `/api/users/{userId}/favorites/{favoriteId}` | 200 | Update note |
-| `DELETE` | `/api/users/{userId}/favorites/{favoriteId}` | 204 | Remove favorite |
+| Method | Path | Auth | Status | Description |
+|--------|------|------|--------|-------------|
+| `GET` | `/api/users/{userId}/favorites` | required (owner) | 200 / 401 / 403 | List user's favorites |
+| `POST` | `/api/users/{userId}/favorites` | required (owner) | 201 / 401 / 403 / 409 | Add a favorite |
+| `PATCH` | `/api/users/{userId}/favorites/{favoriteId}` | required (owner) | 200 / 401 / 403 | Update note |
+| `DELETE` | `/api/users/{userId}/favorites/{favoriteId}` | required (owner) | 204 / 401 / 403 | Remove favorite |
 
 ### Request body — add favorite
 
@@ -63,7 +102,7 @@
 | `mbid` | string | MusicBrainz ID, required |
 | `note` | string | max 500 characters, optional |
 
-Adding a favorite fetches the artist from setlist.fm if it isn't cached yet.
+Adding a favorite fetches the artist from setlist.fm if it isn't cached locally yet.
 
 ### Request body — update note
 
@@ -95,12 +134,14 @@ Adding a favorite fetches the artist from setlist.fm if it isn't cached yet.
 
 ## Setlists (setlist.fm proxy)
 
-| Method | Path | Status | Description |
-|--------|------|--------|-------------|
-| `GET` | `/api/setlists/search?q={query}` | 200 | Search artists by name |
-| `GET` | `/api/setlists/search?q={query}&page={n}` | 200 | Paginated artist search |
-| `GET` | `/api/setlists/{mbid}` | 200 | Get setlists for an artist |
-| `GET` | `/api/setlists/{mbid}?page={n}` | 200 | Paginated setlists |
+| Method | Path | Auth | Status | Description |
+|--------|------|------|--------|-------------|
+| `GET` | `/api/setlists/search?q={query}` | — | 200 | Search artists by name |
+| `GET` | `/api/setlists/search?q={query}&page={n}` | — | 200 | Paginated artist search |
+| `GET` | `/api/setlists/{mbid}` | — | 200 | Get setlists for an artist |
+| `GET` | `/api/setlists/{mbid}?page={n}` | — | 200 | Paginated setlists |
+
+Setlist endpoints are public — no session required.
 
 ### Response — artist search
 
@@ -136,9 +177,9 @@ Adding a favorite fetches the artist from setlist.fm if it isn't cached yet.
 
 ## Artists (local cache)
 
-| Method | Path | Status | Description |
-|--------|------|--------|-------------|
-| `GET` | `/api/artists` | 200 | List all cached artists |
-| `GET` | `/api/artists/{id}` | 200 / 404 | Get cached artist by local ID |
+| Method | Path | Auth | Status | Description |
+|--------|------|------|--------|-------------|
+| `GET` | `/api/artists` | required | 200 | List all cached artists |
+| `GET` | `/api/artists/{id}` | required | 200 / 404 | Get cached artist by local ID |
 
-Artists are only added to the local cache when favorited.
+Artists are added to the local cache when first favorited.

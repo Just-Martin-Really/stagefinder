@@ -7,6 +7,8 @@ import de.dhbwravensburg.webeng.stagefinder.api.exception.NotFoundException;
 import de.dhbwravensburg.webeng.stagefinder.domain.entity.User;
 import de.dhbwravensburg.webeng.stagefinder.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserResponse> findAll() {
         return userRepository.findAll().stream().map(this::toResponse).toList();
@@ -37,13 +40,17 @@ public class UserService {
         User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .build();
         return toResponse(userRepository.save(user));
     }
 
     @Transactional
-    public UserResponse update(Long id, UserRequest request) {
+    public UserResponse update(Long id, UserRequest request, String currentUsername) {
         User user = getOrThrow(id);
+        if (!user.getUsername().equals(currentUsername)) {
+            throw new AccessDeniedException("Cannot modify another user's account");
+        }
         if (!user.getUsername().equals(request.getUsername())
                 && userRepository.existsByUsername(request.getUsername())) {
             throw new ConflictException("Username already taken: " + request.getUsername());
@@ -54,13 +61,15 @@ public class UserService {
         }
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         return toResponse(userRepository.save(user));
     }
 
     @Transactional
-    public void delete(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new NotFoundException("User not found: " + id);
+    public void delete(Long id, String currentUsername) {
+        User user = getOrThrow(id);
+        if (!user.getUsername().equals(currentUsername)) {
+            throw new AccessDeniedException("Cannot delete another user's account");
         }
         userRepository.deleteById(id);
     }
@@ -70,7 +79,7 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("User not found: " + id));
     }
 
-    private UserResponse toResponse(User user) {
+    public UserResponse toResponse(User user) {
         return UserResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())

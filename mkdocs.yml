@@ -43,6 +43,7 @@ nav:
       - Local setup: setup.md
       - Environment variables: environment.md
   - API: api.md
+  - Security: security.md
   - Frontend: frontend.md
   - Testing: testing.md
   - Docker: docker.md

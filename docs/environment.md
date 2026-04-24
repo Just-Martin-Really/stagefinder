@@ -6,6 +6,16 @@
 
 ## Variables
 
+### Database
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DB_URL` | `jdbc:postgresql://localhost:5432/stagefinder` | JDBC connection URL |
+| `DB_USERNAME` | `stagefinder` | Database user |
+| `DB_PASSWORD` | `stagefinder` | Database password |
+
+### setlist.fm
+
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `SETLISTFM_API_KEY` | _(required)_ | Your setlist.fm API key |
