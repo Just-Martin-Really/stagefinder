@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://just-martin-really.github.io/stagefinder/frontend/">
+        <link rel="canonical" href="https://just-martin-really.github.io/stagefinder/setup/">
       
       
-        <link rel="prev" href="../api/">
+        <link rel="prev" href="../architecture/">
       
       
-        <link rel="next" href="../testing/">
+        <link rel="next" href="../api/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Frontend - Stagefinder</title>
+        <title>Local setup - Stagefinder</title>
       
     
     
@@ -83,7 +83,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#frontend" class="md-skip">
+        <a href="#local-setup" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Frontend
+              Local setup
             
           </span>
         </div>
@@ -289,10 +289,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../setup/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Local setup
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
         
   
   
@@ -308,6 +335,82 @@
   
 
       </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Prerequisites
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-the-api-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Configure the API key
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-the-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Run the backend
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-the-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Run the frontend
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Verify
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -343,37 +446,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Frontend
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="././" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
         
   
   
@@ -389,132 +465,6 @@
   
 
       </a>
-      
-        
-
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#routes" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Routes
-      </span>
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pages" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Pages
-      </span>
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pages">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#search" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Search (<code>/</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#artist-detail-artistmbid" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Artist detail (<code>/artist/:mbid</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#favorites-favorites" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Favorites (<code>/favorites</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#account-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Account (<code>/setup</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#api-client" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        API client
-      </span>
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dev-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Dev server
-      </span>
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#production-build" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Production build
-      </span>
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -641,10 +591,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#routes" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Routes
+        Prerequisites
       </span>
     </span>
   </a>
@@ -652,71 +602,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pages" class="md-nav__link">
+  <a href="#configure-the-api-key" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Pages
-      </span>
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pages">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#search" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Search (<code>/</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#artist-detail-artistmbid" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Artist detail (<code>/artist/:mbid</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#favorites-favorites" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Favorites (<code>/favorites</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#account-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Account (<code>/setup</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#api-client" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        API client
+        Configure the API key
       </span>
     </span>
   </a>
@@ -724,10 +613,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dev-server" class="md-nav__link">
+  <a href="#run-the-backend" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Dev server
+        Run the backend
       </span>
     </span>
   </a>
@@ -735,10 +624,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#production-build" class="md-nav__link">
+  <a href="#run-the-frontend" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Production build
+        Run the frontend
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Verify
       </span>
     </span>
   </a>
@@ -763,69 +663,67 @@
   
 
 
-<h1 id="frontend">Frontend</h1>
+<h1 id="local-setup">Local setup</h1>
 <blockquote>
-<p>React 19 + Vite SPA — four pages, one API client, no external dependencies beyond React Router.</p>
+<p>Get the backend and frontend running on your machine.</p>
 </blockquote>
 <hr />
-<h2 id="routes">Routes</h2>
+<h2 id="prerequisites">Prerequisites</h2>
 <table>
 <thead>
 <tr>
-<th>Path</th>
-<th>Component</th>
-<th>Description</th>
+<th>Tool</th>
+<th>Version</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>/</code></td>
-<td><code>ArtistSearchPage</code></td>
-<td>Search artists by name</td>
+<td>Java</td>
+<td>21+</td>
 </tr>
 <tr>
-<td><code>/artist/:mbid</code></td>
-<td><code>ArtistDetailPage</code></td>
-<td>Setlist history for one artist</td>
+<td>Maven</td>
+<td>any (or use <code>./mvnw</code>)</td>
 </tr>
 <tr>
-<td><code>/favorites</code></td>
-<td><code>FavoritesPage</code></td>
-<td>User's saved favorites</td>
+<td>Node.js</td>
+<td>18+</td>
 </tr>
 <tr>
-<td><code>/setup</code></td>
-<td><code>UserSetupPage</code></td>
-<td>Create or switch user account</td>
+<td>npm</td>
+<td>bundled with Node</td>
 </tr>
 </tbody>
 </table>
+<p>You also need a <a href="https://api.setlist.fm/docs/1.0/index.html">setlist.fm API key</a> — registration is free.</p>
 <hr />
-<h2 id="pages">Pages</h2>
-<h3 id="search">Search (<code>/</code>)</h3>
-<p>Calls <code>GET /api/setlists/search?q=</code> on submit. Results are artist cards — clicking one navigates to <code>/artist/:mbid</code>.</p>
-<h3 id="artist-detail-artistmbid">Artist detail (<code>/artist/:mbid</code>)</h3>
-<p>Calls <code>GET /api/setlists/{mbid}</code> to load setlists. Shows date, venue, city, and song list per setlist. Includes an "Add to favorites" action that posts to <code>/api/users/{userId}/favorites</code>.</p>
-<h3 id="favorites-favorites">Favorites (<code>/favorites</code>)</h3>
-<p>Lists the current user's favorites from <code>GET /api/users/{userId}/favorites</code>. Each card shows the artist name, note, and a remove button.</p>
-<h3 id="account-setup">Account (<code>/setup</code>)</h3>
-<p>Creates a user via <code>POST /api/users</code> or loads an existing one. Stores the user ID in <code>localStorage</code> — all other pages read from there.</p>
-<hr />
-<h2 id="api-client">API client</h2>
-<p><code>frontend/src/api/client.js</code> — typed fetch wrapper around the backend. All pages import from here; no page calls <code>fetch</code> directly.</p>
-<hr />
-<h2 id="dev-server">Dev server</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>frontend
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npm<span class="w"> </span>run<span class="w"> </span>dev
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># → http://localhost:5173</span>
+<h2 id="configure-the-api-key">Configure the API key</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cp<span class="w"> </span>.env.example<span class="w"> </span>.env
 </code></pre></div>
-<p>Vite proxies <code>/api/*</code> to <code>http://localhost:8080</code> in dev mode, so no CORS config is needed during development.</p>
-<hr />
-<h2 id="production-build">Production build</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>frontend
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>npm<span class="w"> </span>run<span class="w"> </span>build
+<p>Open <code>.env</code> and set:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>SETLISTFM_API_KEY=your_key
 </code></pre></div>
-<p>Output goes to <code>frontend/dist/</code>. The Docker build copies this into the Spring Boot jar so the backend serves the frontend as static files from <code>/</code>.</p>
+<hr />
+<h2 id="run-the-backend">Run the backend</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">set</span><span class="w"> </span>-a<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>.env<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span>+a
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>./mvnw<span class="w"> </span>spring-boot:run
+</code></pre></div>
+<p>The backend starts at <code>http://localhost:8080</code>.</p>
+<hr />
+<h2 id="run-the-frontend">Run the frontend</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span>frontend
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>npm<span class="w"> </span>install
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>npm<span class="w"> </span>run<span class="w"> </span>dev
+</code></pre></div>
+<p>The frontend starts at <code>http://localhost:5173</code> and proxies API calls to <code>:8080</code>.</p>
+<hr />
+<h2 id="verify">Verify</h2>
+<p>Open <code>http://localhost:5173</code> — the search page loads.<br />
+Open <code>http://localhost:8080/swagger-ui.html</code> — the Swagger UI loads.</p>
+<div class="admonition note">
+<p class="admonition-title">Database resets on restart</p>
+<p>H2 is in-memory. Any users or favorites you create are gone when the backend stops.</p>
+</div>
 
 
 

@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://just-martin-really.github.io/stagefinder/frontend/">
+        <link rel="canonical" href="https://just-martin-really.github.io/stagefinder/testing/">
       
       
-        <link rel="prev" href="../api/">
+        <link rel="prev" href="../frontend/">
       
       
-        <link rel="next" href="../testing/">
+        <link rel="next" href="../docker/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Frontend - Stagefinder</title>
+        <title>Testing - Stagefinder</title>
       
     
     
@@ -83,7 +83,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#frontend" class="md-skip">
+        <a href="#testing" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Frontend
+              Testing
             
           </span>
         </div>
@@ -343,6 +343,33 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -362,7 +389,7 @@
   <span class="md-ellipsis">
     
   
-    Frontend
+    Testing
   
 
     
@@ -380,7 +407,7 @@
   <span class="md-ellipsis">
     
   
-    Frontend
+    Testing
   
 
     
@@ -407,10 +434,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#routes" class="md-nav__link">
+  <a href="#run-the-test-suite" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Routes
+        Run the test suite
       </span>
     </span>
   </a>
@@ -418,71 +445,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pages" class="md-nav__link">
+  <a href="#test-coverage" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Pages
-      </span>
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pages">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#search" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Search (<code>/</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#artist-detail-artistmbid" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Artist detail (<code>/artist/:mbid</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#favorites-favorites" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Favorites (<code>/favorites</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#account-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Account (<code>/setup</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#api-client" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        API client
+        Test coverage
       </span>
     </span>
   </a>
@@ -490,10 +456,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dev-server" class="md-nav__link">
+  <a href="#live-integration-test" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Dev server
+        Live integration test
       </span>
     </span>
   </a>
@@ -501,10 +467,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#production-build" class="md-nav__link">
+  <a href="#run-a-single-test-class" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Production build
+        Run a single test class
       </span>
     </span>
   </a>
@@ -515,33 +481,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../testing/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Testing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -641,10 +580,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#routes" class="md-nav__link">
+  <a href="#run-the-test-suite" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Routes
+        Run the test suite
       </span>
     </span>
   </a>
@@ -652,71 +591,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pages" class="md-nav__link">
+  <a href="#test-coverage" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Pages
-      </span>
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Pages">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#search" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Search (<code>/</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#artist-detail-artistmbid" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Artist detail (<code>/artist/:mbid</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#favorites-favorites" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Favorites (<code>/favorites</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#account-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        Account (<code>/setup</code>)
-      </span>
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#api-client" class="md-nav__link">
-    <span class="md-ellipsis">
-      <span class="md-typeset">
-        API client
+        Test coverage
       </span>
     </span>
   </a>
@@ -724,10 +602,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dev-server" class="md-nav__link">
+  <a href="#live-integration-test" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Dev server
+        Live integration test
       </span>
     </span>
   </a>
@@ -735,10 +613,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#production-build" class="md-nav__link">
+  <a href="#run-a-single-test-class" class="md-nav__link">
     <span class="md-ellipsis">
       <span class="md-typeset">
-        Production build
+        Run a single test class
       </span>
     </span>
   </a>
@@ -763,69 +641,66 @@
   
 
 
-<h1 id="frontend">Frontend</h1>
+<h1 id="testing">Testing</h1>
 <blockquote>
-<p>React 19 + Vite SPA — four pages, one API client, no external dependencies beyond React Router.</p>
+<p>29 tests across four layers — unit, adapter, integration, and smoke.</p>
 </blockquote>
 <hr />
-<h2 id="routes">Routes</h2>
+<h2 id="run-the-test-suite">Run the test suite</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">set</span><span class="w"> </span>-a<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>.env<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span>+a
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./mvnw<span class="w"> </span><span class="nb">test</span>
+</code></pre></div>
+<hr />
+<h2 id="test-coverage">Test coverage</h2>
 <table>
 <thead>
 <tr>
-<th>Path</th>
-<th>Component</th>
-<th>Description</th>
+<th>Layer</th>
+<th>Classes</th>
+<th>Tests</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>/</code></td>
-<td><code>ArtistSearchPage</code></td>
-<td>Search artists by name</td>
+<td>Unit — service</td>
+<td><code>UserServiceTest</code>, <code>FavoriteServiceTest</code>, <code>ArtistServiceTest</code></td>
+<td>14</td>
 </tr>
 <tr>
-<td><code>/artist/:mbid</code></td>
-<td><code>ArtistDetailPage</code></td>
-<td>Setlist history for one artist</td>
+<td>Unit — adapter</td>
+<td><code>SetlistFmServiceTest</code></td>
+<td>4</td>
 </tr>
 <tr>
-<td><code>/favorites</code></td>
-<td><code>FavoritesPage</code></td>
-<td>User's saved favorites</td>
+<td>Integration</td>
+<td><code>UserControllerIT</code>, <code>FavoriteControllerIT</code></td>
+<td>10</td>
 </tr>
 <tr>
-<td><code>/setup</code></td>
-<td><code>UserSetupPage</code></td>
-<td>Create or switch user account</td>
+<td>Smoke</td>
+<td><code>StagefinderApplicationTests</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>29</strong></td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="pages">Pages</h2>
-<h3 id="search">Search (<code>/</code>)</h3>
-<p>Calls <code>GET /api/setlists/search?q=</code> on submit. Results are artist cards — clicking one navigates to <code>/artist/:mbid</code>.</p>
-<h3 id="artist-detail-artistmbid">Artist detail (<code>/artist/:mbid</code>)</h3>
-<p>Calls <code>GET /api/setlists/{mbid}</code> to load setlists. Shows date, venue, city, and song list per setlist. Includes an "Add to favorites" action that posts to <code>/api/users/{userId}/favorites</code>.</p>
-<h3 id="favorites-favorites">Favorites (<code>/favorites</code>)</h3>
-<p>Lists the current user's favorites from <code>GET /api/users/{userId}/favorites</code>. Each card shows the artist name, note, and a remove button.</p>
-<h3 id="account-setup">Account (<code>/setup</code>)</h3>
-<p>Creates a user via <code>POST /api/users</code> or loads an existing one. Stores the user ID in <code>localStorage</code> — all other pages read from there.</p>
-<hr />
-<h2 id="api-client">API client</h2>
-<p><code>frontend/src/api/client.js</code> — typed fetch wrapper around the backend. All pages import from here; no page calls <code>fetch</code> directly.</p>
-<hr />
-<h2 id="dev-server">Dev server</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>frontend
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npm<span class="w"> </span>run<span class="w"> </span>dev
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># → http://localhost:5173</span>
+<h2 id="live-integration-test">Live integration test</h2>
+<p><code>SetlistFmLiveIntegrationTest</code> calls the real setlist.fm API. It is skipped by default.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">RUN_SETLISTFM_LIVE_TESTS</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>./mvnw<span class="w"> </span>-Dtest<span class="o">=</span>SetlistFmLiveIntegrationTest<span class="w"> </span><span class="nb">test</span>
 </code></pre></div>
-<p>Vite proxies <code>/api/*</code> to <code>http://localhost:8080</code> in dev mode, so no CORS config is needed during development.</p>
+<div class="admonition warning">
+<p class="admonition-title">Requires a valid API key</p>
+<p>Set <code>SETLISTFM_API_KEY</code> in your environment before running the live test.</p>
+</div>
 <hr />
-<h2 id="production-build">Production build</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>frontend
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>npm<span class="w"> </span>run<span class="w"> </span>build
+<h2 id="run-a-single-test-class">Run a single test class</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>./mvnw<span class="w"> </span>-Dtest<span class="o">=</span>UserServiceTest<span class="w"> </span><span class="nb">test</span>
 </code></pre></div>
-<p>Output goes to <code>frontend/dist/</code>. The Docker build copies this into the Spring Boot jar so the backend serves the frontend as static files from <code>/</code>.</p>
 
 
 
