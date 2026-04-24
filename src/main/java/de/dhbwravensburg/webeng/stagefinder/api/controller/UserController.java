@@ -6,6 +6,7 @@ import de.dhbwravensburg.webeng.stagefinder.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,13 +35,15 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserResponse update(@PathVariable Long id, @Valid @RequestBody UserRequest request) {
-        return userService.update(id, request);
+    public UserResponse update(@PathVariable Long id,
+                               @Valid @RequestBody UserRequest request,
+                               Authentication authentication) {
+        return userService.update(id, request, authentication.getName());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        userService.delete(id);
+    public void delete(@PathVariable Long id, Authentication authentication) {
+        userService.delete(id, authentication.getName());
     }
 }

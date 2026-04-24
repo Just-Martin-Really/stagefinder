@@ -7,6 +7,7 @@ import de.dhbwravensburg.webeng.stagefinder.api.dto.FavoriteRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.FavoriteResponse;
 import de.dhbwravensburg.webeng.stagefinder.api.exception.ConflictException;
 import de.dhbwravensburg.webeng.stagefinder.api.exception.NotFoundException;
+import org.springframework.security.access.AccessDeniedException;
 import de.dhbwravensburg.webeng.stagefinder.domain.entity.Artist;
 import de.dhbwravensburg.webeng.stagefinder.domain.entity.Favorite;
 import de.dhbwravensburg.webeng.stagefinder.domain.entity.User;
@@ -27,14 +28,16 @@ public class FavoriteService {
     private final ArtistService artistService;
     private final SetlistFmService setlistFmService;
 
-    public List<FavoriteResponse> findByUser(Long userId) {
-        getUserOrThrow(userId);
+    public List<FavoriteResponse> findByUser(Long userId, String currentUsername) {
+        User user = getUserOrThrow(userId);
+        requireOwner(user, currentUsername);
         return favoriteRepository.findByUserId(userId).stream().map(this::toResponse).toList();
     }
 
     @Transactional
-    public FavoriteResponse add(Long userId, FavoriteRequest request) {
+    public FavoriteResponse add(Long userId, FavoriteRequest request, String currentUsername) {
         User user = getUserOrThrow(userId);
+        requireOwner(user, currentUsername);
         // Resolve artist metadata from setlist.fm, then upsert locally.
         SfmArtist sfm = setlistFmService.getArtist(request.getMbid());
         Artist artist = artistService.findOrCreate(sfm.getMbid(), sfm.getName(), sfm.getSortName(), sfm.getUrl());
@@ -52,8 +55,9 @@ public class FavoriteService {
     }
 
     @Transactional
-    public FavoriteResponse updateNote(Long userId, Long favoriteId, FavoriteNoteRequest request) {
-        getUserOrThrow(userId);
+    public FavoriteResponse updateNote(Long userId, Long favoriteId, FavoriteNoteRequest request, String currentUsername) {
+        User user = getUserOrThrow(userId);
+        requireOwner(user, currentUsername);
         Favorite favorite = favoriteRepository.findById(favoriteId)
                 .filter(f -> f.getUser().getId().equals(userId))
                 .orElseThrow(() -> new NotFoundException("Favorite not found: " + favoriteId));
@@ -62,8 +66,9 @@ public class FavoriteService {
     }
 
     @Transactional
-    public void remove(Long userId, Long favoriteId) {
-        getUserOrThrow(userId);
+    public void remove(Long userId, Long favoriteId, String currentUsername) {
+        User user = getUserOrThrow(userId);
+        requireOwner(user, currentUsername);
         Favorite favorite = favoriteRepository.findById(favoriteId)
                 .filter(f -> f.getUser().getId().equals(userId))
                 .orElseThrow(() -> new NotFoundException("Favorite not found: " + favoriteId));
@@ -73,6 +78,12 @@ public class FavoriteService {
     private User getUserOrThrow(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found: " + userId));
+    }
+
+    private void requireOwner(User user, String currentUsername) {
+        if (!user.getUsername().equals(currentUsername)) {
+            throw new AccessDeniedException("Access denied");
+        }
     }
 
     private FavoriteResponse toResponse(Favorite favorite) {
