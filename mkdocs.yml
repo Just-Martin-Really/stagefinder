@@ -1,0 +1,40 @@
+site_name: Stagefinder
+site_url: https://just-martin-really.github.io/stagefinder/
+site_description: Discover where your favourite artists are playing.
+repo_url: https://github.com/Just-Martin-Really/stagefinder
+repo_name: Just-Martin-Really/stagefinder
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.sections
+    - content.code.copy
+
+nav:
+  - Overview: index.md
+  - Architecture: architecture.md
+  - Local setup: setup.md
+  - REST API: api.md
+  - Frontend: frontend.md
+  - Testing: testing.md
+  - Docker: docker.md
+  - Environment variables: environment.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - tables
