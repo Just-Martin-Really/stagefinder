@@ -29,5 +29,11 @@ jobs:
       - name: Install Zensical
         run: pip install -r requirements-docs.txt
 
+      - name: Build docs
+        run: zensical build
+
       - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
