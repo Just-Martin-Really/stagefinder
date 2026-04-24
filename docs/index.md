@@ -1,4 +1,5 @@
 ---
+title: Stagefinder
 hide:
   - navigation
   - toc

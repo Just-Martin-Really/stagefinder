@@ -226,6 +226,7 @@
 
 /* ─── Hide page chrome on landing ───────────────────────────────────────── */
 
-.home .md-content__inner {
-  padding-top: 0;
+/* MkDocs renders a page title H1 above content — suppress it on hero pages */
+.md-content__inner:has(.sf-hero) > h1 {
+  display: none;
 }
