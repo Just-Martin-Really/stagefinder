@@ -6,15 +6,16 @@
 
 ## System diagram
 
-```
-┌──────────────────┐   HTTP/JSON   ┌──────────────────────┐   REST   ┌────────────────┐
-│  Frontend        │ ◄───────────► │  Backend             │ ◄──────► │  setlist.fm    │
-│  React + Vite    │               │  Spring Boot (Java)  │          │  External API  │
-│  :5173 (dev)     │               │  :8080               │          └────────────────┘
-└──────────────────┘               │                      │
-                                   │  Spring Data JPA     │
-                                   │  H2 (in-memory)      │
-                                   └──────────────────────┘
+```mermaid
+flowchart LR
+    F["**Frontend**\nReact + Vite\n:5173 (dev)"]
+    B["**Backend**\nSpring Boot\n:8080"]
+    D[("H2\nin-memory")]
+    S["**setlist.fm**\nExternal API"]
+
+    F <-->|HTTP/JSON| B
+    B <-->|REST| S
+    B --- D
 ```
 
 The frontend never calls setlist.fm directly. All external traffic goes through the backend.

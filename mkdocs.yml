@@ -1,40 +1,75 @@
 site_name: Stagefinder
 site_url: https://just-martin-really.github.io/stagefinder/
-site_description: Discover where your favourite artists are playing.
+site_description: Find where your favourite artists are playing.
 repo_url: https://github.com/Just-Martin-Really/stagefinder
 repo_name: Just-Martin-Really/stagefinder
+copyright: Copyright &copy; 2025 Martin Liess
 
 theme:
   name: material
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
+    scheme: slate
+    primary: custom
+    accent: custom
   features:
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.top
+    - navigation.path
     - navigation.sections
+    - navigation.footer
     - content.code.copy
+    - content.code.annotate
+    - toc.follow
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Just-Martin-Really/stagefinder
+      name: Stagefinder on GitHub
+  generator: false
 
 nav:
   - Overview: index.md
   - Architecture: architecture.md
-  - Local setup: setup.md
-  - REST API: api.md
+  - Setup:
+    - Local setup: setup.md
+    - Environment variables: environment.md
+  - API: api.md
   - Frontend: frontend.md
   - Testing: testing.md
   - Docker: docker.md
-  - Environment variables: environment.md
 
 markdown_extensions:
   - admonition
-  - pymdownx.superfences
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
-  - tables
+      auto_title: true
+      pygments_lang_class: true
+      line_spans: __span
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
