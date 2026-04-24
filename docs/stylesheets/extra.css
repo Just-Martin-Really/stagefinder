@@ -55,35 +55,36 @@
   border-radius: 50%;
   mix-blend-mode: screen;
   pointer-events: none;
-  filter: blur(70px);
+  filter: blur(30px);
+  will-change: transform;
 }
 
 .sf-blob--purple {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.55) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.65) 0%, transparent 65%);
   top: -160px;
   left: -120px;
-  animation: drift-a 9s ease-in-out infinite alternate;
+  animation: drift-a 6s ease-in-out infinite alternate;
 }
 
 .sf-blob--cyan {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.45) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.55) 0%, transparent 65%);
   bottom: -80px;
   right: -80px;
-  animation: drift-b 12s ease-in-out infinite alternate;
+  animation: drift-b 9s ease-in-out infinite alternate;
 }
 
 @keyframes drift-a {
   from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(100px, 80px) scale(1.12); }
+  to   { transform: translate(280px, 180px) scale(1.15); }
 }
 
 @keyframes drift-b {
   from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(-80px, -60px) scale(0.9); }
+  to   { transform: translate(-220px, -140px) scale(0.88); }
 }
 
 /* Perspective grid */

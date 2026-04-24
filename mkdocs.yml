@@ -3,7 +3,7 @@ site_url: https://just-martin-really.github.io/stagefinder/
 site_description: Find where your favourite artists are playing.
 repo_url: https://github.com/Just-Martin-Really/stagefinder
 repo_name: Just-Martin-Really/stagefinder
-copyright: Copyright &copy; 2025 Martin Liess
+copyright: Copyright &copy; 2025 Martin Ließ
 
 theme:
   name: material
@@ -40,8 +40,8 @@ nav:
   - Overview: index.md
   - Architecture: architecture.md
   - Setup:
-    - Local setup: setup.md
-    - Environment variables: environment.md
+      - Local setup: setup.md
+      - Environment variables: environment.md
   - API: api.md
   - Frontend: frontend.md
   - Testing: testing.md
