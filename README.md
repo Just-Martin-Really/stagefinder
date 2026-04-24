@@ -1,5 +1,7 @@
 # Stagefinder
 
+**Docs:** https://just-martin-really.github.io/stagefinder/
+
 Discover where your favourite artists are playing. Search for artists via the **setlist.fm** API, browse past and
 upcoming setlists, and build a personal watchlist of favourites.
 
