@@ -24,6 +24,24 @@ jobs:
       - name: Build and run tests
         run: ./mvnw verify -q
 
+  docs:
+    name: Build Docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Zensical
+        run: pip install -r requirements-docs.txt
+
+      - name: Build docs
+        run: zensical build
+
   frontend:
     name: Build Frontend
     runs-on: ubuntu-latest
