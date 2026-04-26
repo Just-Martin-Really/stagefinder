@@ -35,3 +35,7 @@ hide:
     <div class="sf-card__body">Save artists as favorites with personal notes. Your watchlist, your way.</div>
   </div>
 </div>
+
+<div class="sf-built-with">
+  Built with <a href="https://zensical.org" target="_blank" rel="noopener noreferrer">Zensical</a>
+</div>

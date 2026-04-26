@@ -36,6 +36,15 @@
     margin: 0 !important;
 }
 
+/* Force block layout to eliminate sidebar column allocations */
+.md-main__inner:has(.sf-hero) {
+    display: block !important;
+}
+
+.md-main__inner:has(.sf-hero) .md-sidebar {
+    display: none !important;
+}
+
 .sf-hero {
     position: relative;
     overflow: hidden;
@@ -243,6 +252,24 @@
     color: var(--sf-text-dim);
     line-height: 1.65;
     margin: 0;
+}
+
+/* ─── Built with ────────────────────────────────────────────────────────── */
+
+.sf-built-with {
+    text-align: center;
+    padding: 1.5rem 2rem 3rem;
+    font-size: 0.85rem;
+    color: var(--sf-text-dim);
+}
+
+.sf-built-with a {
+    color: var(--sf-purple-light);
+    text-decoration: none;
+}
+
+.sf-built-with a:hover {
+    text-decoration: underline;
 }
 
 /* ─── Hide page chrome on landing ───────────────────────────────────────── */
