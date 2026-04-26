@@ -26,7 +26,6 @@ export default function App() {
         <span className="brand">Stagefinder</span>
         <NavLink to="/">Search</NavLink>
         <NavLink to="/favorites">Favorites</NavLink>
-        <NavLink to="/setup">Account</NavLink>
         <div className="nav-right">
           <a href="https://just-martin-really.github.io/stagefinder/" target="_blank" rel="noopener noreferrer" className="nav-docs">Docs</a>
           {currentUser ? (
