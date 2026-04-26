@@ -6,6 +6,19 @@ Most endpoints require authentication — send requests with a valid session coo
 
 ---
 
+## Swagger UI
+
+The backend exposes an interactive OpenAPI UI at `/swagger-ui.html` and the raw spec at `/v3/api-docs`. Both are public — no session required.
+
+| URL | Purpose |
+|-----|---------|
+| `/swagger-ui.html` | Browser UI — try requests directly |
+| `/v3/api-docs` | OpenAPI 3 JSON spec |
+
+To authenticate in Swagger UI: call `POST /api/auth/login` via the UI first. The browser stores the `JSESSIONID` cookie, which subsequent requests in the same tab send automatically.
+
+---
+
 ## Authentication
 
 | Method | Path | Auth | Status | Description |
