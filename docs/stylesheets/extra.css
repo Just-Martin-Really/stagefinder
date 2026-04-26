@@ -139,7 +139,8 @@
 .sf-hero__content {
     position: relative;
     z-index: 1;
-    max-width: 820px;
+    max-width: min(95vw, 1200px);
+    width: 100%;
 }
 
 .sf-hero__title {

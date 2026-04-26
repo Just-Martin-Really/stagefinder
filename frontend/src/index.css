@@ -183,7 +183,7 @@ button.ghost:hover:not(:disabled) { background: #333345; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: hidden;
   background: #080810;
 }
@@ -265,7 +265,7 @@ button.ghost:hover:not(:disabled) { background: #333345; }
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 0 1.5rem 5rem;
+  padding: clamp(2rem, 8vh, 5rem) 1.5rem 3rem;
   animation: hero-rise 0.9s cubic-bezier(0.22,1,0.36,1) both;
 }
 
