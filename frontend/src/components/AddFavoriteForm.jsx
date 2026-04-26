@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { api } from '../api/client'
 
-export default function AddFavoriteForm({ mbid, currentUser }) {
+export default function AddFavoriteForm({ mbid, currentUser, userLoading }) {
   const [note, setNote] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
+
+  if (userLoading) return null
 
   if (!currentUser) return (
     <div className="card" style={{ marginBottom: '1rem' }}>

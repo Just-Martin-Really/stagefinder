@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 
-export default function FavoritesPage({ currentUser }) {
+export default function FavoritesPage({ currentUser, userLoading }) {
   const [favorites, setFavorites] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -36,6 +36,8 @@ export default function FavoritesPage({ currentUser }) {
       setError(err.message)
     }
   }
+
+  if (userLoading) return null
 
   if (!currentUser) {
     return (

@@ -9,10 +9,11 @@ import AuthModal from './components/AuthModal'
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null)
+  const [userLoading, setUserLoading] = useState(true)
   const [modal, setModal] = useState(null)
 
   useEffect(() => {
-    api.me().then(setCurrentUser).catch(() => {})
+    api.me().then(setCurrentUser).catch(() => {}).finally(() => setUserLoading(false))
   }, [])
 
   async function handleLogout() {
@@ -43,8 +44,8 @@ export default function App() {
       </nav>
       <Routes>
         <Route path="/" element={<ArtistSearchPage />} />
-        <Route path="/artist/:mbid" element={<ArtistDetailPage currentUser={currentUser} />} />
-        <Route path="/favorites" element={<FavoritesPage currentUser={currentUser} />} />
+        <Route path="/artist/:mbid" element={<ArtistDetailPage currentUser={currentUser} userLoading={userLoading} />} />
+        <Route path="/favorites" element={<FavoritesPage currentUser={currentUser} userLoading={userLoading} />} />
         <Route path="/setup" element={<UserSetupPage />} />
       </Routes>
       {modal && (

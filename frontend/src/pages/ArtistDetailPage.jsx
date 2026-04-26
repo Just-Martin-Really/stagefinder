@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { api } from '../api/client'
 import AddFavoriteForm from '../components/AddFavoriteForm'
 
-export default function ArtistDetailPage({ currentUser }) {
+export default function ArtistDetailPage({ currentUser, userLoading }) {
   const { mbid } = useParams()
   const [setlists, setSetlists] = useState([])
   const [loading, setLoading] = useState(true)
@@ -22,7 +22,7 @@ export default function ArtistDetailPage({ currentUser }) {
         Artist <span className="tag">{mbid}</span>
       </h1>
 
-      <AddFavoriteForm mbid={mbid} currentUser={currentUser} />
+      <AddFavoriteForm mbid={mbid} currentUser={currentUser} userLoading={userLoading} />
 
       <h2>Setlists</h2>
 
