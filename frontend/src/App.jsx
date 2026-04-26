@@ -43,8 +43,8 @@ export default function App() {
       </nav>
       <Routes>
         <Route path="/" element={<ArtistSearchPage />} />
-        <Route path="/artist/:mbid" element={<ArtistDetailPage />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/artist/:mbid" element={<ArtistDetailPage currentUser={currentUser} />} />
+        <Route path="/favorites" element={<FavoritesPage currentUser={currentUser} />} />
         <Route path="/setup" element={<UserSetupPage />} />
       </Routes>
       {modal && (

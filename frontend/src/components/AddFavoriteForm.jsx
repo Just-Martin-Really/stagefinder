@@ -1,18 +1,15 @@
 import { useState } from 'react'
 import { api } from '../api/client'
 
-const USER_KEY = 'stagefinder_user_id'
-
-export default function AddFavoriteForm({ mbid }) {
-  const userId = localStorage.getItem(USER_KEY)
+export default function AddFavoriteForm({ mbid, currentUser }) {
   const [note, setNote] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
 
-  if (!userId) return (
+  if (!currentUser) return (
     <div className="card" style={{ marginBottom: '1rem' }}>
-      <span className="card-sub">Set up an account to save this artist to your favorites.</span>
+      <span className="card-sub">Log in to save this artist to your favorites.</span>
     </div>
   )
 
@@ -22,7 +19,7 @@ export default function AddFavoriteForm({ mbid }) {
     setSuccess(false)
     setLoading(true)
     try {
-      await api.addFavorite(userId, { mbid, note })
+      await api.addFavorite(currentUser.id, { mbid, note })
       setSuccess(true)
       setNote('')
     } catch (err) {

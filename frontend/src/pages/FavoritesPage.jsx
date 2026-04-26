@@ -2,10 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 
-const USER_KEY = 'stagefinder_user_id'
-
-export default function FavoritesPage() {
-  const [userId] = useState(() => localStorage.getItem(USER_KEY))
+export default function FavoritesPage({ currentUser }) {
   const [favorites, setFavorites] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -14,16 +11,16 @@ export default function FavoritesPage() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!userId) { setLoading(false); return }
-    api.getFavorites(userId)
+    if (!currentUser) { setLoading(false); return }
+    api.getFavorites(currentUser.id)
       .then(setFavorites)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
-  }, [userId])
+  }, [currentUser])
 
   async function handleRemove(favoriteId) {
     try {
-      await api.removeFavorite(userId, favoriteId)
+      await api.removeFavorite(currentUser.id, favoriteId)
       setFavorites((prev) => prev.filter((f) => f.id !== favoriteId))
     } catch (err) {
       setError(err.message)
@@ -32,7 +29,7 @@ export default function FavoritesPage() {
 
   async function handleSaveNote(favoriteId) {
     try {
-      const updated = await api.updateFavoriteNote(userId, favoriteId, { note: noteInput })
+      const updated = await api.updateFavoriteNote(currentUser.id, favoriteId, { note: noteInput })
       setFavorites((prev) => prev.map((f) => (f.id === favoriteId ? updated : f)))
       setEditingId(null)
     } catch (err) {
@@ -40,16 +37,11 @@ export default function FavoritesPage() {
     }
   }
 
-  if (!userId) {
+  if (!currentUser) {
     return (
       <div className="page">
         <h1>Favorites</h1>
-        <p className="empty-msg">
-          No account set up yet.{' '}
-          <span style={{ color: '#a78bfa', cursor: 'pointer' }} onClick={() => navigate('/setup')}>
-            Create one here.
-          </span>
-        </p>
+        <p className="empty-msg">Log in to see your favorites.</p>
       </div>
     )
   }
