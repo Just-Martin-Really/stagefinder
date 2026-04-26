@@ -166,4 +166,30 @@ class FavoriteControllerIT {
         mockMvc.perform(get("/api/users/1/favorites"))
                 .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    @WithMockUser(username = "fan6")
+    void updateNote_returns200WithUpdatedNote() throws Exception {
+        Long userId = createUser("fan6", "fan6@example.com");
+
+        FavoriteRequest addReq = new FavoriteRequest();
+        addReq.setMbid("abc-123");
+        addReq.setNote("original");
+
+        String addBody = mockMvc.perform(post("/api/users/" + userId + "/favorites")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(addReq)))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        Long favoriteId = objectMapper.readTree(addBody).get("id").asLong();
+
+        String patchBody = "{\"note\":\"updated note\"}";
+
+        mockMvc.perform(patch("/api/users/" + userId + "/favorites/" + favoriteId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(patchBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.note").value("updated note"));
+    }
 }

@@ -146,4 +146,13 @@ class FavoriteServiceTest {
         assertThatThrownBy(() -> favoriteService.findByUser(99L, "anyone"))
                 .isInstanceOf(NotFoundException.class);
     }
+
+    @Test
+    void updateNote_wrongOwner_throwsAccessDenied() {
+        User user = stubUser();
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+
+        assertThatThrownBy(() -> favoriteService.updateNote(1L, 100L, new FavoriteNoteRequest(), "bob"))
+                .isInstanceOf(AccessDeniedException.class);
+    }
 }
