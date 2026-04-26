@@ -1,8 +1,10 @@
 package de.dhbwravensburg.webeng.stagefinder.api.exception;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,6 +35,21 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = baseBody(HttpStatus.BAD_REQUEST, "Validation failed");
         body.put("errors", fieldErrors);
         return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleConstraintViolation(ConstraintViolationException ex) {
+        List<String> fieldErrors = ex.getConstraintViolations().stream()
+                .map(cv -> cv.getPropertyPath() + ": " + cv.getMessage())
+                .toList();
+        Map<String, Object> body = baseBody(HttpStatus.BAD_REQUEST, "Validation failed");
+        body.put("errors", fieldErrors);
+        return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Map<String, Object>> handleAuthentication(AuthenticationException ex) {
+        return error(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
