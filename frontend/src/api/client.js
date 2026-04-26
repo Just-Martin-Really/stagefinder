@@ -14,6 +14,12 @@ async function request(path, options = {}) {
 }
 
 export const api = {
+  // Auth
+  login:    (data) => request('/auth/login',  { method: 'POST', body: JSON.stringify(data) }),
+  logout:   ()     => request('/auth/logout', { method: 'POST' }),
+  me:       ()     => request('/auth/me'),
+  register: (data) => request('/users',       { method: 'POST', body: JSON.stringify(data) }),
+
   // Artists / setlist.fm
   searchArtists: (q, page = 1) => request(`/setlists/search?q=${encodeURIComponent(q)}&page=${page}`),
   getSetlists: (mbid, page = 1) => request(`/setlists/${mbid}?page=${page}`),
