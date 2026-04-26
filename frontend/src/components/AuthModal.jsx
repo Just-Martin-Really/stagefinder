@@ -24,8 +24,8 @@ export default function AuthModal({ defaultTab = 'login', onSuccess, onClose }) 
     try {
       const user = await api.login({ username, password })
       onSuccess(user)
-    } catch {
-      setError('Invalid username or password.')
+    } catch (err) {
+      setError(err.message || 'Login failed.')
     } finally {
       setLoading(false)
     }
