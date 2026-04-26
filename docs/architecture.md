@@ -10,7 +10,7 @@
 flowchart LR
     F["**Frontend**\nReact + Vite\n:5173 (dev)"]
     B["**Backend**\nSpring Boot\n:8080"]
-    D[("H2\nin-memory")]
+    D[("PostgreSQL 17\nDocker Compose")]
     S["**setlist.fm**\nExternal API"]
 
     F <-->|HTTP/JSON| B
@@ -33,7 +33,7 @@ The frontend never calls setlist.fm directly. All external traffic goes through 
 | `domain/entity` | JPA entities — `User`, `Artist`, `Favorite` |
 | `domain/repository` | Spring Data repositories |
 | `adapter/setlistfm` | HTTP client for setlist.fm, response models, config |
-| `config` | CORS configuration |
+| `config` | `SecurityConfig` (auth rules, CORS, session policy) |
 
 ---
 
@@ -43,7 +43,7 @@ The frontend never calls setlist.fm directly. All external traffic goes through 
 User ──< Favorite >── Artist
 ```
 
-- **User** — username + email, no auth
+- **User** — username, email, BCrypt password hash; owns their favorites (mutations are ownership-guarded)
 - **Artist** — fetched from setlist.fm on first request, then cached by `mbid`
 - **Favorite** — join between one user and one artist, with an optional note and a creation timestamp
 
@@ -56,7 +56,8 @@ The `(user_id, artist_id)` pair has a unique constraint — a user can only favo
 | Layer | Technology |
 |-------|------------|
 | Backend | Java 21, Spring Boot 4, Maven |
-| Persistence | Spring Data JPA, H2 (in-memory) |
+| Persistence | Spring Data JPA, PostgreSQL 17, Flyway |
+| Auth | Spring Security, BCrypt, Spring Session JDBC |
 | Validation | Bean Validation (`@Valid`) |
 | API docs | springdoc-openapi (Swagger UI) |
 | Frontend | React 19, Vite, React Router |
