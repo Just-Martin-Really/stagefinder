@@ -188,11 +188,83 @@ Setlist endpoints are public — no session required.
 
 ---
 
+## Feed
+
+| Method | Path | Auth | Status | Description |
+|--------|------|------|--------|-------------|
+| `GET` | `/api/users/{userId}/feed` | required (owner) | 200 / 401 / 403 | Recent setlists from all favorited artists |
+
+Fetches page 1 of setlists from setlist.fm for each favorited artist, merges them into a single list, and sorts by event date descending. Artists whose setlist.fm call fails are silently skipped.
+
+### Response — feed
+
+```json
+[
+  {
+    "artistName": "Radiohead",
+    "artistMbid": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+    "eventDate": "20-06-2024",
+    "venueName": "Glastonbury Festival",
+    "cityName": "Pilton",
+    "countryName": "United Kingdom",
+    "songCount": 22,
+    "url": "https://www.setlist.fm/setlist/radiohead/2024/..."
+  }
+]
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `artistName` | string | Artist display name |
+| `artistMbid` | string | MusicBrainz ID |
+| `eventDate` | string | `dd-MM-yyyy` |
+| `venueName` | string | Venue name, nullable |
+| `cityName` | string | City, nullable |
+| `countryName` | string | Country, nullable |
+| `songCount` | int | Number of songs in the setlist |
+| `url` | string | setlist.fm URL, nullable |
+
+---
+
 ## Artists (local cache)
 
 | Method | Path | Auth | Status | Description |
 |--------|------|------|--------|-------------|
 | `GET` | `/api/artists` | required | 200 | List all cached artists |
 | `GET` | `/api/artists/{id}` | required | 200 / 404 | Get cached artist by local ID |
+| `GET` | `/api/artists/mbid/{mbid}/stats` | — | 200 / 404 / 502 | Play statistics for an artist |
 
 Artists are added to the local cache when first favorited.
+
+### Response — artist stats
+
+Fetches 3 pages of setlists from setlist.fm (up to 60 shows) and aggregates play data. Artist name is resolved from the local cache first, falling back to a live setlist.fm lookup.
+
+```json
+{
+  "mbid": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+  "name": "Radiohead",
+  "totalShows": 60,
+  "totalSongPlays": 1243,
+  "oldestShowDate": "14-05-2022",
+  "newestShowDate": "20-06-2024",
+  "topSongs": [
+    { "name": "Creep", "count": 42 },
+    { "name": "Karma Police", "count": 38 }
+  ],
+  "topVenues": [
+    { "name": "Glastonbury Festival", "city": "Pilton", "country": "United Kingdom", "count": 3 }
+  ]
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `mbid` | string | MusicBrainz ID |
+| `name` | string | Artist display name |
+| `totalShows` | int | Number of setlists in the analysed dataset |
+| `totalSongPlays` | int | Total song occurrences across all setlists |
+| `oldestShowDate` | string | `dd-MM-yyyy` of the earliest show in the dataset, nullable |
+| `newestShowDate` | string | `dd-MM-yyyy` of the most recent show in the dataset, nullable |
+| `topSongs` | array | Up to 10 songs by play count, descending |
+| `topVenues` | array | Up to 5 venues by show count, descending |
