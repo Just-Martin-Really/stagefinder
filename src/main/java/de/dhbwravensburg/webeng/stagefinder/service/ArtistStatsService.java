@@ -9,10 +9,13 @@ import de.dhbwravensburg.webeng.stagefinder.domain.repository.ArtistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,6 +24,7 @@ import java.util.stream.Stream;
 public class ArtistStatsService {
 
     private static final int PAGES_TO_FETCH = 3;
+    private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private static final int TOP_SONGS_LIMIT = 10;
     private static final int TOP_VENUES_LIMIT = 5;
 
@@ -72,11 +76,25 @@ public class ArtistStatsService {
                 })
                 .toList();
 
+        List<LocalDate> dates = setlists.stream()
+                .map(SetlistDto::getEventDate)
+                .filter(d -> d != null)
+                .map(d -> { try { return LocalDate.parse(d, DATE_FMT); } catch (Exception e) { return null; } })
+                .filter(d -> d != null)
+                .toList();
+
+        String oldestShowDate = dates.stream().min(Comparator.naturalOrder())
+                .map(d -> d.format(DATE_FMT)).orElse(null);
+        String newestShowDate = dates.stream().max(Comparator.naturalOrder())
+                .map(d -> d.format(DATE_FMT)).orElse(null);
+
         return ArtistStatsDto.builder()
                 .mbid(mbid)
                 .name(name)
                 .totalShows(setlists.size())
                 .totalSongPlays(allSongs.size())
+                .oldestShowDate(oldestShowDate)
+                .newestShowDate(newestShowDate)
                 .topSongs(topSongs)
                 .topVenues(topVenues)
                 .build();
