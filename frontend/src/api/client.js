@@ -23,6 +23,7 @@ export const api = {
   // Artists / setlist.fm
   searchArtists: (q, page = 1) => request(`/setlists/search?q=${encodeURIComponent(q)}&page=${page}`),
   getSetlists: (mbid, page = 1) => request(`/setlists/${mbid}?page=${page}`),
+  getArtistStats: (mbid) => request(`/artists/mbid/${mbid}/stats`),
 
   // Users
   getUsers: () => request('/users'),
