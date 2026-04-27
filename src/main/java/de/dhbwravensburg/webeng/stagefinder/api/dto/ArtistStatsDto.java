@@ -12,6 +12,8 @@ public class ArtistStatsDto {
     private String name;
     private int totalShows;
     private int totalSongPlays;
+    private String oldestShowDate;
+    private String newestShowDate;
     private List<SongStatDto> topSongs;
     private List<VenueStatDto> topVenues;
 }

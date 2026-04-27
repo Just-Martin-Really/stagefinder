@@ -35,7 +35,12 @@ export default function ArtistDetailPage({ currentUser, userLoading }) {
         <div className="stats-grid">
           <div className="stat-card">
             <div className="stat-value">{stats.totalShows}</div>
-            <div className="stat-label">Shows analysed</div>
+            <div className="stat-label">
+              Shows analysed
+              {stats.oldestShowDate && stats.newestShowDate && (
+                <> · {fmtMonthYear(stats.oldestShowDate)} – {fmtMonthYear(stats.newestShowDate)}</>
+              )}
+            </div>
           </div>
           <div className="stat-card">
             <div className="stat-value">{stats.totalSongPlays}</div>
@@ -107,4 +112,10 @@ export default function ArtistDetailPage({ currentUser, userLoading }) {
       ))}
     </div>
   )
+}
+
+function fmtMonthYear(ddmmyyyy) {
+  if (!ddmmyyyy) return ''
+  const [dd, mm, yyyy] = ddmmyyyy.split('-')
+  return new Date(`${yyyy}-${mm}-${dd}`).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })
 }
