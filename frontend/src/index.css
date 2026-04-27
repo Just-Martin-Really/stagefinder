@@ -20,7 +20,8 @@ nav {
   border-bottom: 1px solid #2a2a38;
 }
 
-nav .brand { font-weight: 700; font-size: 1.2rem; color: #a78bfa; }
+nav .brand { font-weight: 700; font-size: 1.2rem; color: #a78bfa; text-decoration: none; }
+nav .brand:hover { color: #c4b5fd; }
 nav a { color: #ccc; font-size: 0.95rem; }
 nav a:hover { color: #fff; text-decoration: none; }
 
@@ -380,3 +381,8 @@ button.ghost:hover:not(:disabled) { background: #333345; }
   .hero-search-form { flex-direction: column; border-radius: 12px; }
   .hero-search-btn  { border-radius: 0 0 10px 10px; padding: 0.85rem; }
 }
+
+/* Feed */
+.feed-heading { font-size: 1.1rem; font-weight: 600; color: #a78bfa; margin-bottom: 1rem; }
+.feed-date { color: #a78bfa; font-size: 0.85rem; }
+.btn-link { display: inline-block; margin-top: 0.5rem; font-size: 0.85rem; }
