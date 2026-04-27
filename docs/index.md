@@ -1,41 +1,26 @@
 ---
-hide:
-  - navigation
-  - toc
+title: Stagefinder Documentation
 ---
 
-<div class="sf-hero">
-  <div class="sf-blob sf-blob--purple"><div class="sf-blob__inner"></div></div>
-  <div class="sf-blob sf-blob--cyan"><div class="sf-blob__inner"></div></div>
-  <div class="sf-grid"></div>
-  <div class="sf-hero__content">
-    <p class="sf-hero__title">Stagefinder</p>
-    <p class="sf-hero__tagline">Find where your artists play.</p>
-    <div class="sf-hero__actions">
-      <a href="setup/" class="sf-btn sf-btn--primary">Get started</a>
-      <a href="https://github.com/Just-Martin-Really/stagefinder" class="sf-btn sf-btn--ghost">GitHub ↗</a>
-    </div>
-  </div>
-</div>
+# Official Documentation — Stagefinder
 
-<div class="sf-features">
-  <div class="sf-card">
-    <div class="sf-card__icon">⌕</div>
-    <div class="sf-card__title">Search</div>
-    <div class="sf-card__body">Find any artist by name. Results are proxied from setlist.fm — no API key needed in the browser.</div>
-  </div>
-  <div class="sf-card">
-    <div class="sf-card__icon">♪</div>
-    <div class="sf-card__title">Discover</div>
-    <div class="sf-card__body">Browse an artist's full setlist history — every show, venue, city, and song list.</div>
-  </div>
-  <div class="sf-card">
-    <div class="sf-card__icon">★</div>
-    <div class="sf-card__title">Track</div>
-    <div class="sf-card__body">Save artists as favorites with personal notes. Your watchlist, your way.</div>
-  </div>
-</div>
+*By Martin Ließ*
 
-<div class="sf-built-with">
-  Built with <a href="https://zensical.org" target="_blank" rel="noopener noreferrer">Zensical</a>
-</div>
+---
+
+Stagefinder is a Spring Boot + React web application that proxies artist search and setlist data from [setlist.fm](https://www.setlist.fm), lets authenticated users save artists as favourites with personal notes, and surfaces a personalised feed of recent shows on the landing page.
+
+Source code: [github.com/Just-Martin-Really/stagefinder](https://github.com/Just-Martin-Really/stagefinder)
+
+## Documentation sections
+
+| Section | Contents |
+|---------|----------|
+| [Setup](setup.md) | Prerequisites, environment variables, and running the application with Docker Compose |
+| [Architecture](architecture.md) | System components, request flow, and data model |
+| [API](api.md) | All REST endpoints, request/response shapes, and authentication requirements |
+| [Frontend](frontend.md) | React routes, component structure, and build configuration |
+| [Security](security.md) | Session handling, CSRF protection, and password storage |
+| [Testing](testing.md) | Test layout, coverage by layer, and how to run the suite |
+| [Docker](docker.md) | Image configuration, Compose setup, and build targets |
+| [Environment](environment.md) | Full reference for every environment variable |
