@@ -1,7 +1,9 @@
 package de.dhbwravensburg.webeng.stagefinder.api.controller;
 
 import de.dhbwravensburg.webeng.stagefinder.api.dto.ArtistResponse;
+import de.dhbwravensburg.webeng.stagefinder.api.dto.ArtistStatsDto;
 import de.dhbwravensburg.webeng.stagefinder.service.ArtistService;
+import de.dhbwravensburg.webeng.stagefinder.service.ArtistStatsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +19,7 @@ import java.util.List;
 public class ArtistController {
 
     private final ArtistService artistService;
+    private final ArtistStatsService artistStatsService;
 
     @GetMapping
     @Operation(summary = "List all persisted artists")
@@ -29,5 +32,13 @@ public class ArtistController {
     @ApiResponse(responseCode = "404", description = "Artist not found")
     public ArtistResponse getById(@PathVariable Long id) {
         return artistService.findById(id);
+    }
+
+    @GetMapping("/mbid/{mbid}/stats")
+    @Operation(summary = "Get play statistics for an artist by MusicBrainz ID")
+    @ApiResponse(responseCode = "404", description = "Artist not found on setlist.fm")
+    @ApiResponse(responseCode = "502", description = "setlist.fm upstream error")
+    public ArtistStatsDto getStats(@PathVariable String mbid) {
+        return artistStatsService.getStats(mbid);
     }
 }

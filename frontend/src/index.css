@@ -386,3 +386,40 @@ button.ghost:hover:not(:disabled) { background: #333345; }
 .feed-heading { font-size: 1.1rem; font-weight: 600; color: #a78bfa; margin-bottom: 1rem; }
 .feed-date { color: #a78bfa; font-size: 0.85rem; }
 .btn-link { display: inline-block; margin-top: 0.5rem; font-size: 0.85rem; }
+
+/* Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #1a1a24;
+  border: 1px solid #2a2a38;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+}
+
+.stat-card--wide { grid-column: span 2; }
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #a78bfa;
+  line-height: 1;
+}
+
+.stat-label { color: #888; font-size: 0.8rem; margin-top: 0.25rem; }
+.stat-label--heading { font-size: 0.85rem; font-weight: 600; color: #ccc; margin-bottom: 0.5rem; }
+
+.stat-list { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+.stat-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+.stat-list-name { color: #e8e8e8; font-size: 0.9rem; }
+.stat-list-count { color: #a78bfa; font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-card--wide { grid-column: span 1; }
+}
