@@ -61,11 +61,15 @@ Ownership is enforced at the service layer, not just at the routing level.
 | Endpoint group | Who can access |
 |---------------|----------------|
 | `POST /api/users` | Anyone (registration) |
-| `GET /api/users/{id}` | Any authenticated user |
+| `POST /api/auth/login` | Anyone |
+| `/api/setlists/**` | Anyone |
+| `/swagger-ui/**`, `/v3/api-docs/**` | Anyone |
+| `GET /api/users`, `GET /api/users/{id}` | Any authenticated user |
 | `PUT/DELETE /api/users/{id}` | The owner only |
 | `/api/users/{userId}/favorites/**` | The owner only |
-| `/api/setlists/**` | Anyone |
-| `/api/auth/**` | Anyone |
+| `GET /api/users/{userId}/feed` | The owner only |
+| `/api/artists/**` | Any authenticated user |
+| `GET /api/auth/me`, `POST /api/auth/logout` | Any authenticated user |
 
 Unauthenticated requests to protected endpoints receive `401 Unauthorized`.  
 Authenticated requests to another user's resources receive `403 Forbidden`.

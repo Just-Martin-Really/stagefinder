@@ -55,7 +55,8 @@ On success, the server sets a `JSESSIONID` cookie. Include it in subsequent requ
 
 | Method | Path | Auth | Status | Description |
 |--------|------|------|--------|-------------|
-| `POST` | `/api/users` | — | 201 | Register a new user |
+| `POST` | `/api/users` | — | 201 / 409 | Register a new user |
+| `GET` | `/api/users` | required | 200 | List all users |
 | `GET` | `/api/users/{id}` | required | 200 / 401 / 404 | Get user by ID |
 | `PUT` | `/api/users/{id}` | required (owner) | 200 / 401 / 403 / 404 | Update user |
 | `DELETE` | `/api/users/{id}` | required (owner) | 204 / 401 / 403 / 404 | Delete user |
@@ -232,7 +233,7 @@ Fetches page 1 of setlists from setlist.fm for each favorited artist, merges the
 |--------|------|------|--------|-------------|
 | `GET` | `/api/artists` | required | 200 | List all cached artists |
 | `GET` | `/api/artists/{id}` | required | 200 / 404 | Get cached artist by local ID |
-| `GET` | `/api/artists/mbid/{mbid}/stats` | — | 200 / 404 / 502 | Play statistics for an artist |
+| `GET` | `/api/artists/mbid/{mbid}/stats` | required | 200 / 401 / 404 / 502 | Play statistics for an artist |
 
 Artists are added to the local cache when first favorited.
 

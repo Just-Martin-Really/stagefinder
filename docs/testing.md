@@ -1,6 +1,6 @@
 # Testing
 
-> 47 tests across four layers — unit, adapter, integration, and smoke.
+> 54 tests across four layers — unit, adapter, integration, and smoke.
 
 ---
 
@@ -17,11 +17,12 @@ set -a && source .env && set +a
 
 | Layer | Classes | Tests |
 |-------|---------|-------|
-| Unit — service | `UserServiceTest`, `FavoriteServiceTest`, `ArtistServiceTest` | 15 |
+| Unit — service | `UserServiceTest`, `FavoriteServiceTest`, `ArtistServiceTest`, `FeedServiceTest`, `ArtistStatsServiceTest` | 25 |
 | Unit — adapter | `SetlistFmServiceTest` | 4 |
-| Integration | `UserControllerIT`, `FavoriteControllerIT`, `AuthControllerIT`, `SetlistControllerIT` | 27 |
+| Integration | `AuthControllerIT`, `UserControllerIT`, `FavoriteControllerIT`, `SetlistControllerIT` | 23 |
 | Smoke | `StagefinderApplicationTests` | 1 |
-| **Total** | | **47** |
+| Live (skipped) | `SetlistFmLiveIntegrationTest` | 1 |
+| **Total** | | **54** |
 
 ---
 
