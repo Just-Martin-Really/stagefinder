@@ -28,6 +28,9 @@ export const api = {
   getUsers: () => request('/users'),
   createUser: (data) => request('/users', { method: 'POST', body: JSON.stringify(data) }),
 
+  // Feed
+  getFeed: (userId) => request(`/users/${userId}/feed`),
+
   // Favorites
   getFavorites: (userId) => request(`/users/${userId}/favorites`),
   addFavorite: (userId, data) =>
