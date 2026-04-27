@@ -24,8 +24,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <nav>
-        <span className="brand">Stagefinder</span>
-        <NavLink to="/">Search</NavLink>
+        <NavLink to="/" className="brand" end>Stagefinder</NavLink>
         <NavLink to="/favorites">Favorites</NavLink>
         <div className="nav-right">
           <a href="https://just-martin-really.github.io/stagefinder/" target="_blank" rel="noopener noreferrer" className="nav-docs">Docs</a>
@@ -43,7 +42,7 @@ export default function App() {
         </div>
       </nav>
       <Routes>
-        <Route path="/" element={<ArtistSearchPage />} />
+        <Route path="/" element={<ArtistSearchPage currentUser={currentUser} userLoading={userLoading} />} />
         <Route path="/artist/:mbid" element={<ArtistDetailPage currentUser={currentUser} userLoading={userLoading} />} />
         <Route path="/favorites" element={<FavoritesPage currentUser={currentUser} userLoading={userLoading} />} />
         <Route path="/setup" element={<UserSetupPage />} />
