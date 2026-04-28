@@ -18,7 +18,7 @@ export default function UserSetupPage() {
     setSuccess(null)
     setLoading(true)
     try {
-      const user = await api.createUser({ username, email })
+      const user = await api.register({ username, email })
       localStorage.setItem(USER_KEY, user.id)
       setSuccess(`Account created! Welcome, ${user.username}.`)
       setUsername('')

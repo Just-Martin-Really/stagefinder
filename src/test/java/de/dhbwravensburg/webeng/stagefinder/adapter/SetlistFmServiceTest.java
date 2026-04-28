@@ -3,7 +3,6 @@ package de.dhbwravensburg.webeng.stagefinder.adapter;
 import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.SetlistFmClient;
 import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.SetlistFmService;
 import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.*;
-import de.dhbwravensburg.webeng.stagefinder.api.dto.ArtistResponse;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.SetlistDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,16 +25,14 @@ class SetlistFmServiceTest {
     SetlistFmService setlistFmService;
 
     @Test
-    void searchArtists_mapsToArtistResponses() {
+    void searchArtists_returnsClientResults() {
         SfmArtist sfm = new SfmArtist();
         sfm.setMbid("abc-123");
         sfm.setName("Metallica");
-        sfm.setSortName("Metallica");
-        sfm.setUrl("https://www.setlist.fm/setlists/metallica.html");
 
         when(client.searchArtists("Metallica", 1)).thenReturn(List.of(sfm));
 
-        List<ArtistResponse> results = setlistFmService.searchArtists("Metallica", 1);
+        List<SfmArtist> results = setlistFmService.searchArtists("Metallica", 1);
 
         assertThat(results).hasSize(1);
         assertThat(results.get(0).getMbid()).isEqualTo("abc-123");
@@ -46,7 +43,7 @@ class SetlistFmServiceTest {
     void searchArtists_emptyResult_returnsEmptyList() {
         when(client.searchArtists("Unknown Artist XYZ", 1)).thenReturn(List.of());
 
-        List<ArtistResponse> results = setlistFmService.searchArtists("Unknown Artist XYZ", 1);
+        List<SfmArtist> results = setlistFmService.searchArtists("Unknown Artist XYZ", 1);
 
         assertThat(results).isEmpty();
     }

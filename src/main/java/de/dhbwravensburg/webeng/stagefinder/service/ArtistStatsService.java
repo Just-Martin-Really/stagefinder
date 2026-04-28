@@ -7,24 +7,23 @@ import de.dhbwravensburg.webeng.stagefinder.api.dto.SongStatDto;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.VenueStatDto;
 import de.dhbwravensburg.webeng.stagefinder.domain.repository.ArtistRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ArtistStatsService {
 
     private static final int PAGES_TO_FETCH = 3;
-    private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private static final int TOP_SONGS_LIMIT = 10;
     private static final int TOP_VENUES_LIMIT = 5;
 
@@ -42,6 +41,7 @@ public class ArtistStatsService {
                     try {
                         return setlistFmService.getSetlists(mbid, page).stream();
                     } catch (Exception e) {
+                        log.warn("Failed to fetch setlists for {} page {}: {}", mbid, page, e.getMessage());
                         return Stream.empty();
                     }
                 })
@@ -79,14 +79,14 @@ public class ArtistStatsService {
         List<LocalDate> dates = setlists.stream()
                 .map(SetlistDto::getEventDate)
                 .filter(d -> d != null)
-                .map(d -> { try { return LocalDate.parse(d, DATE_FMT); } catch (Exception e) { return null; } })
+                .map(d -> { try { return LocalDate.parse(d, SetlistDto.EVENT_DATE_FORMAT); } catch (Exception e) { return null; } })
                 .filter(d -> d != null)
                 .toList();
 
         String oldestShowDate = dates.stream().min(Comparator.naturalOrder())
-                .map(d -> d.format(DATE_FMT)).orElse(null);
+                .map(d -> d.format(SetlistDto.EVENT_DATE_FORMAT)).orElse(null);
         String newestShowDate = dates.stream().max(Comparator.naturalOrder())
-                .map(d -> d.format(DATE_FMT)).orElse(null);
+                .map(d -> d.format(SetlistDto.EVENT_DATE_FORMAT)).orElse(null);
 
         return ArtistStatsDto.builder()
                 .mbid(mbid)

@@ -25,10 +25,6 @@ export const api = {
   getSetlists: (mbid, page = 1) => request(`/setlists/${mbid}?page=${page}`),
   getArtistStats: (mbid) => request(`/artists/mbid/${mbid}/stats`),
 
-  // Users
-  getUsers: () => request('/users'),
-  createUser: (data) => request('/users', { method: 'POST', body: JSON.stringify(data) }),
-
   // Feed
   getFeed: (userId) => request(`/users/${userId}/feed`),
 

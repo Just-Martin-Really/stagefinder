@@ -8,6 +8,4 @@ import java.util.Optional;
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     Optional<Artist> findByMbid(String mbid);
-
-    boolean existsByMbid(String mbid);
 }

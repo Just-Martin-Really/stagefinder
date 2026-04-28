@@ -4,7 +4,6 @@ import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.SfmArtist;
 import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.SfmSet;
 import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.SfmSetlist;
 import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.SfmSetlistResponse;
-import de.dhbwravensburg.webeng.stagefinder.api.dto.ArtistResponse;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.SetlistDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +18,8 @@ public class SetlistFmService {
 
     private final SetlistFmClient client;
 
-    public List<ArtistResponse> searchArtists(String query, int page) {
-        return client.searchArtists(query, page).stream()
-                .map(this::toArtistResponse)
-                .toList();
+    public List<SfmArtist> searchArtists(String query, int page) {
+        return client.searchArtists(query, page);
     }
 
     public SfmArtist getArtist(String mbid) {
@@ -37,15 +34,6 @@ public class SetlistFmService {
         return response.getSetlist().stream()
                 .map(this::toSetlistDto)
                 .toList();
-    }
-
-    private ArtistResponse toArtistResponse(SfmArtist sfm) {
-        return ArtistResponse.builder()
-                .mbid(sfm.getMbid())
-                .name(sfm.getName())
-                .sortName(sfm.getSortName())
-                .url(sfm.getUrl())
-                .build();
     }
 
     private SetlistDto toSetlistDto(SfmSetlist s) {
