@@ -9,20 +9,19 @@ import de.dhbwravensburg.webeng.stagefinder.domain.entity.User;
 import de.dhbwravensburg.webeng.stagefinder.domain.repository.FavoriteRepository;
 import de.dhbwravensburg.webeng.stagefinder.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FeedService {
-
-    private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private final FavoriteRepository favoriteRepository;
     private final UserRepository userRepository;
@@ -43,12 +42,13 @@ public class FeedService {
                         return setlistFmService.getSetlists(fav.getArtist().getMbid(), 1).stream()
                                 .map(s -> toFeedItem(fav.getArtist().getName(), fav.getArtist().getMbid(), s));
                     } catch (Exception e) {
+                        log.warn("Failed to fetch setlists for {}: {}", fav.getArtist().getMbid(), e.getMessage());
                         return Stream.empty();
                     }
                 })
                 .filter(item -> item.getEventDate() != null)
                 .sorted(Comparator.comparing(
-                        item -> LocalDate.parse(item.getEventDate(), DATE_FMT),
+                        item -> LocalDate.parse(item.getEventDate(), SetlistDto.EVENT_DATE_FORMAT),
                         Comparator.reverseOrder()
                 ))
                 .toList();

@@ -1,6 +1,7 @@
 package de.dhbwravensburg.webeng.stagefinder.api.controller;
 
 import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.SetlistFmService;
+import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.SfmArtist;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.ArtistResponse;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.SetlistDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,14 @@ public class SetlistController {
     public List<ArtistResponse> searchArtists(
             @Parameter(description = "Artist name to search for") @RequestParam @NotBlank String q,
             @Parameter(description = "Result page (1-based)") @RequestParam(defaultValue = "1") int page) {
-        return setlistFmService.searchArtists(q, page);
+        return setlistFmService.searchArtists(q, page).stream()
+                .map(sfm -> ArtistResponse.builder()
+                        .mbid(sfm.getMbid())
+                        .name(sfm.getName())
+                        .sortName(sfm.getSortName())
+                        .url(sfm.getUrl())
+                        .build())
+                .toList();
     }
 
     @GetMapping("/{mbid}")
