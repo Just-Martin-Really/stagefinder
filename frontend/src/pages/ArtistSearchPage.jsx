@@ -34,6 +34,14 @@ export default function ArtistSearchPage({ currentUser, userLoading }) {
     setSearched(true)
     try {
       const data = await api.searchArtists(query.trim())
+      const q = query.trim().toLowerCase()
+      data.sort((a, b) => {
+        const score = (name) => {
+          const n = name.toLowerCase()
+          return n === q ? 0 : n.startsWith(q) ? 1 : 2
+        }
+        return score(a.name) - score(b.name)
+      })
       setResults(data)
       if (data.length === 0) setSearchError('No artists found.')
     } catch (err) {
