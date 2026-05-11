@@ -5,8 +5,8 @@ import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.SfmArtist;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.FavoriteNoteRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.FavoriteRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.FavoriteResponse;
-import de.dhbwravensburg.webeng.stagefinder.api.exception.ConflictException;
 import de.dhbwravensburg.webeng.stagefinder.api.exception.NotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import de.dhbwravensburg.webeng.stagefinder.domain.entity.Artist;
 import de.dhbwravensburg.webeng.stagefinder.domain.entity.Favorite;
 import de.dhbwravensburg.webeng.stagefinder.domain.entity.User;
@@ -67,7 +67,6 @@ class FavoriteServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(setlistFmService.getArtist("abc-123")).thenReturn(sfm);
         when(artistService.findOrCreate("abc-123", "Metallica", null, null)).thenReturn(artist);
-        when(favoriteRepository.existsByUserIdAndArtistId(1L, 10L)).thenReturn(false);
         when(favoriteRepository.save(any())).thenReturn(saved);
         when(artistService.toResponse(artist)).thenCallRealMethod();
 
@@ -87,7 +86,7 @@ class FavoriteServiceTest {
     }
 
     @Test
-    void add_duplicate_throwsConflict() {
+    void add_duplicate_propagatesDataIntegrityViolation() {
         User user = stubUser();
         Artist artist = stubArtist();
 
@@ -101,10 +100,11 @@ class FavoriteServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(setlistFmService.getArtist("abc-123")).thenReturn(sfm);
         when(artistService.findOrCreate("abc-123", "Metallica", null, null)).thenReturn(artist);
-        when(favoriteRepository.existsByUserIdAndArtistId(1L, 10L)).thenReturn(true);
+        when(favoriteRepository.save(any()))
+                .thenThrow(new DataIntegrityViolationException("uq_favorites_user_artist"));
 
         assertThatThrownBy(() -> favoriteService.add(1L, req, "alice"))
-                .isInstanceOf(ConflictException.class);
+                .isInstanceOf(DataIntegrityViolationException.class);
     }
 
     @Test

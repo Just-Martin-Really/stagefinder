@@ -5,7 +5,6 @@ import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.SfmArtist;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.FavoriteNoteRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.FavoriteRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.FavoriteResponse;
-import de.dhbwravensburg.webeng.stagefinder.api.exception.ConflictException;
 import de.dhbwravensburg.webeng.stagefinder.api.exception.NotFoundException;
 import org.springframework.security.access.AccessDeniedException;
 import de.dhbwravensburg.webeng.stagefinder.domain.entity.Artist;
@@ -38,13 +37,8 @@ public class FavoriteService {
     public FavoriteResponse add(Long userId, FavoriteRequest request, String currentUsername) {
         User user = getUserOrThrow(userId);
         requireOwner(user, currentUsername);
-        // Resolve artist metadata from setlist.fm, then upsert locally.
         SfmArtist sfm = setlistFmService.getArtist(request.getMbid());
         Artist artist = artistService.findOrCreate(sfm.getMbid(), sfm.getName(), sfm.getSortName(), sfm.getUrl());
-
-        if (favoriteRepository.existsByUserIdAndArtistId(userId, artist.getId())) {
-            throw new ConflictException("Artist already in favorites");
-        }
 
         Favorite favorite = Favorite.builder()
                 .user(user)
