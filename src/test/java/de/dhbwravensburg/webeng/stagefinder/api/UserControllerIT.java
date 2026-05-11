@@ -1,6 +1,7 @@
 package de.dhbwravensburg.webeng.stagefinder.api;
 
 import de.dhbwravensburg.webeng.stagefinder.api.dto.UserRequest;
+import de.dhbwravensburg.webeng.stagefinder.api.dto.UserUpdateRequest;
 import de.dhbwravensburg.webeng.stagefinder.domain.repository.FavoriteRepository;
 import de.dhbwravensburg.webeng.stagefinder.domain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -124,6 +125,32 @@ class UserControllerIT {
 
         mockMvc.perform(get("/api/users/" + id))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "carol")
+    void updateUser_withoutPassword_returns200_andPreservesHash() throws Exception {
+        String body = mockMvc.perform(post("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request("carol", "carol@example.com"))))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        Long id = objectMapper.readTree(body).get("id").asLong();
+        String originalHash = userRepository.findById(id).orElseThrow().getPasswordHash();
+
+        UserUpdateRequest update = new UserUpdateRequest();
+        update.setUsername("carol");
+        update.setEmail("carol2@example.com");
+
+        mockMvc.perform(put("/api/users/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("carol2@example.com"));
+
+        String afterHash = userRepository.findById(id).orElseThrow().getPasswordHash();
+        org.assertj.core.api.Assertions.assertThat(afterHash).isEqualTo(originalHash);
     }
 
     @Test

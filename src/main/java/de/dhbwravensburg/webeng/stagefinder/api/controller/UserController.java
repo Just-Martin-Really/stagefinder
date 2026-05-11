@@ -2,6 +2,7 @@ package de.dhbwravensburg.webeng.stagefinder.api.controller;
 
 import de.dhbwravensburg.webeng.stagefinder.api.dto.UserRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.UserResponse;
+import de.dhbwravensburg.webeng.stagefinder.api.dto.UserUpdateRequest;
 import de.dhbwravensburg.webeng.stagefinder.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -49,7 +50,7 @@ public class UserController {
     @ApiResponse(responseCode = "403", description = "Not the account owner")
     @ApiResponse(responseCode = "404", description = "User not found")
     public UserResponse update(@PathVariable Long id,
-                               @Valid @RequestBody UserRequest request,
+                               @Valid @RequestBody UserUpdateRequest request,
                                Authentication authentication) {
         return userService.update(id, request, authentication.getName());
     }

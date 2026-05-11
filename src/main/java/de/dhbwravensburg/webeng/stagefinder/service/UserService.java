@@ -2,6 +2,7 @@ package de.dhbwravensburg.webeng.stagefinder.service;
 
 import de.dhbwravensburg.webeng.stagefinder.api.dto.UserRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.UserResponse;
+import de.dhbwravensburg.webeng.stagefinder.api.dto.UserUpdateRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.exception.ConflictException;
 import de.dhbwravensburg.webeng.stagefinder.api.exception.NotFoundException;
 import de.dhbwravensburg.webeng.stagefinder.domain.entity.User;
@@ -46,7 +47,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse update(Long id, UserRequest request, String currentUsername) {
+    public UserResponse update(Long id, UserUpdateRequest request, String currentUsername) {
         User user = getOrThrow(id);
         if (!user.getUsername().equals(currentUsername)) {
             throw new AccessDeniedException("Cannot modify another user's account");
@@ -61,7 +62,9 @@ public class UserService {
         }
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
-        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        }
         return toResponse(userRepository.save(user));
     }
 
