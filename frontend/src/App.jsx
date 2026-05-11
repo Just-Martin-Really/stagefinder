@@ -4,7 +4,6 @@ import { api } from './api/client'
 import ArtistSearchPage from './pages/ArtistSearchPage'
 import ArtistDetailPage from './pages/ArtistDetailPage'
 import FavoritesPage from './pages/FavoritesPage'
-import UserSetupPage from './pages/UserSetupPage'
 import AuthModal from './components/AuthModal'
 
 export default function App() {
@@ -45,7 +44,6 @@ export default function App() {
         <Route path="/" element={<ArtistSearchPage currentUser={currentUser} userLoading={userLoading} />} />
         <Route path="/artist/:mbid" element={<ArtistDetailPage currentUser={currentUser} userLoading={userLoading} />} />
         <Route path="/favorites" element={<FavoritesPage currentUser={currentUser} userLoading={userLoading} />} />
-        <Route path="/setup" element={<UserSetupPage />} />
       </Routes>
       {modal && (
         <AuthModal
