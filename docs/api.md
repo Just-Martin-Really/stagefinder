@@ -61,7 +61,7 @@ On success, the server sets a `JSESSIONID` cookie. Include it in subsequent requ
 | `PUT` | `/api/users/{id}` | required (owner) | 200 / 401 / 403 / 404 | Update user |
 | `DELETE` | `/api/users/{id}` | required (owner) | 204 / 401 / 403 / 404 | Delete user |
 
-### Request body — register / update user
+### Request body — register user (`POST /api/users`)
 
 ```json
 {
@@ -76,6 +76,22 @@ On success, the server sets a `JSESSIONID` cookie. Include it in subsequent requ
 | `username` | string | 3–50 characters, required |
 | `email` | string | valid email format, required |
 | `password` | string | 8–100 characters, required |
+
+### Request body — update user (`PUT /api/users/{id}`)
+
+```json
+{
+  "username": "martin",
+  "email": "martin@example.com",
+  "password": "newpassword"
+}
+```
+
+| Field | Type | Constraints |
+|-------|------|-------------|
+| `username` | string | 3–50 characters, required |
+| `email` | string | valid email format, required |
+| `password` | string | optional. Omit or send blank to keep the existing password. If provided, must be 8–100 characters. |
 
 ### Response — user
 

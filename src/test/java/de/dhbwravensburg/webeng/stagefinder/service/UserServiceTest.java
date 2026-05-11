@@ -2,6 +2,7 @@ package de.dhbwravensburg.webeng.stagefinder.service;
 
 import de.dhbwravensburg.webeng.stagefinder.api.dto.UserRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.UserResponse;
+import de.dhbwravensburg.webeng.stagefinder.api.dto.UserUpdateRequest;
 import de.dhbwravensburg.webeng.stagefinder.api.exception.ConflictException;
 import de.dhbwravensburg.webeng.stagefinder.api.exception.NotFoundException;
 import de.dhbwravensburg.webeng.stagefinder.domain.entity.User;
@@ -40,6 +41,14 @@ class UserServiceTest {
         req.setUsername(username);
         req.setEmail(email);
         req.setPassword("securepass");
+        return req;
+    }
+
+    private UserUpdateRequest updateRequest(String username, String email, String password) {
+        UserUpdateRequest req = new UserUpdateRequest();
+        req.setUsername(username);
+        req.setEmail(email);
+        req.setPassword(password);
         return req;
     }
 
@@ -93,18 +102,50 @@ class UserServiceTest {
     }
 
     @Test
-    void update_succeeds() {
+    void update_withPassword_rotatesHash() {
         User existing = savedUser(1L, "alice", "alice@example.com");
         when(userRepository.findById(1L)).thenReturn(Optional.of(existing));
         when(userRepository.existsByUsername("alice2")).thenReturn(false);
         when(userRepository.existsByEmail("alice2@example.com")).thenReturn(false);
-        when(passwordEncoder.encode(anyString())).thenReturn("$2a$hashed");
+        when(passwordEncoder.encode("newpass123")).thenReturn("$2a$rotated");
         when(userRepository.save(any())).thenReturn(existing);
 
-        UserResponse response = userService.update(1L, validRequest("alice2", "alice2@example.com"), "alice");
+        UserResponse response = userService.update(
+                1L, updateRequest("alice2", "alice2@example.com", "newpass123"), "alice");
 
         assertThat(response).isNotNull();
-        verify(userRepository).save(existing);
+        assertThat(existing.getPasswordHash()).isEqualTo("$2a$rotated");
+        verify(passwordEncoder).encode("newpass123");
+    }
+
+    @Test
+    void update_withoutPassword_keepsExistingHash() {
+        User existing = savedUser(1L, "alice", "alice@example.com");
+        String originalHash = existing.getPasswordHash();
+        when(userRepository.findById(1L)).thenReturn(Optional.of(existing));
+        when(userRepository.existsByEmail("alice2@example.com")).thenReturn(false);
+        when(userRepository.save(any())).thenReturn(existing);
+
+        UserResponse response = userService.update(
+                1L, updateRequest("alice", "alice2@example.com", null), "alice");
+
+        assertThat(response).isNotNull();
+        assertThat(existing.getEmail()).isEqualTo("alice2@example.com");
+        assertThat(existing.getPasswordHash()).isEqualTo(originalHash);
+        verify(passwordEncoder, never()).encode(anyString());
+    }
+
+    @Test
+    void update_blankPassword_keepsExistingHash() {
+        User existing = savedUser(1L, "alice", "alice@example.com");
+        String originalHash = existing.getPasswordHash();
+        when(userRepository.findById(1L)).thenReturn(Optional.of(existing));
+        when(userRepository.save(any())).thenReturn(existing);
+
+        userService.update(1L, updateRequest("alice", "alice@example.com", "   "), "alice");
+
+        assertThat(existing.getPasswordHash()).isEqualTo(originalHash);
+        verify(passwordEncoder, never()).encode(anyString());
     }
 
     @Test
@@ -112,7 +153,8 @@ class UserServiceTest {
         User existing = savedUser(1L, "alice", "alice@example.com");
         when(userRepository.findById(1L)).thenReturn(Optional.of(existing));
 
-        assertThatThrownBy(() -> userService.update(1L, validRequest("alice", "alice@example.com"), "bob"))
+        assertThatThrownBy(() -> userService.update(
+                1L, updateRequest("alice", "alice@example.com", "securepass"), "bob"))
                 .isInstanceOf(AccessDeniedException.class);
     }
 
