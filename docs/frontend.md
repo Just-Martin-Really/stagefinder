@@ -1,6 +1,6 @@
 # Frontend
 
-> React 19 + Vite SPA — four pages, one API client, no external dependencies beyond React Router.
+> React 19 + Vite SPA — three pages, one API client, no external dependencies beyond React Router.
 
 ---
 
@@ -11,7 +11,6 @@
 | `/` | `ArtistSearchPage` | Feed (logged in) or search results |
 | `/artist/:mbid` | `ArtistDetailPage` | Stats and setlist history for one artist |
 | `/favorites` | `FavoritesPage` | User's saved favorites |
-| `/setup` | `UserSetupPage` | Create or switch user account |
 
 ---
 
@@ -48,11 +47,7 @@ Below the stats grid, the full setlist list from `GET /api/setlists/{mbid}` show
 
 ### Favorites (`/favorites`)
 
-Lists the current user's favorites from `GET /api/users/{userId}/favorites`. Each card shows the artist name, note, and a remove button. Requires login — shows a prompt otherwise.
-
-### Account (`/setup`)
-
-Creates a user via `POST /api/users` or loads an existing one.
+Lists the current user's favorites from `GET /api/users/{userId}/favorites`. Each card shows the artist name, note, and a remove button. Requires login, otherwise shows a prompt.
 
 ---
 
