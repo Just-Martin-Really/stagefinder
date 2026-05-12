@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { api } from '../api/client'
+import { useAuth } from '../auth/AuthContext'
 
-export default function AddFavoriteForm({ mbid, currentUser, userLoading }) {
+export default function AddFavoriteForm({ mbid }) {
+  const { currentUser, userLoading } = useAuth()
   const [note, setNote] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)

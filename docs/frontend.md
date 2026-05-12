@@ -51,9 +51,27 @@ Lists the current user's favorites from `GET /api/users/{userId}/favorites`. Eac
 
 ---
 
+## Auth state
+
+`frontend/src/auth/AuthContext.jsx` provides `AuthProvider` and the `useAuth()` hook. `App.jsx` wraps the routes in `AuthProvider`; pages and components read `currentUser` and `userLoading` from `useAuth()` instead of receiving props.
+
+`useAuth()` returns:
+
+| Field | Description |
+|-------|-------------|
+| `currentUser` | The logged-in user, or `null` |
+| `userLoading` | `true` while the initial `GET /api/auth/me` probe is in flight |
+| `setCurrentUser(user)` | Set after a successful login |
+| `clearAuth()` | Clear local auth state, e.g. on logout |
+| `requestAuth(mode)` | Open the auth modal in `'login'` or `'register'` mode |
+
+The provider registers a global 401 handler with the API client. Any API call that returns 401 (other than the boot `me()` probe) clears `currentUser` and opens the login modal. After a successful login the modal closes; the user retries the failed action manually.
+
 ## API client
 
 `frontend/src/api/client.js` — fetch wrapper around the backend. All pages import from here; no page calls `fetch` directly.
+
+`setUnauthorizedHandler(fn)` registers a callback invoked when any request returns 401. Pass `{ skipAuthHandler: true }` in the options to opt out for a specific call (used internally by the auth boot probe).
 
 | Method | Path |
 |--------|------|

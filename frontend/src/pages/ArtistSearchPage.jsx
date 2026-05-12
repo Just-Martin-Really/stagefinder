@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
+import { useAuth } from '../auth/AuthContext'
 import Hero from '../components/Hero'
 
-export default function ArtistSearchPage({ currentUser, userLoading }) {
+export default function ArtistSearchPage() {
+  const { currentUser, userLoading } = useAuth()
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
   const [searchLoading, setSearchLoading] = useState(false)

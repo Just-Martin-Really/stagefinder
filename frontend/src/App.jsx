@@ -1,57 +1,52 @@
-import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
 import { api } from './api/client'
+import { AuthProvider, useAuth } from './auth/AuthContext'
 import ArtistSearchPage from './pages/ArtistSearchPage'
 import ArtistDetailPage from './pages/ArtistDetailPage'
 import FavoritesPage from './pages/FavoritesPage'
-import AuthModal from './components/AuthModal'
 
-export default function App() {
-  const [currentUser, setCurrentUser] = useState(null)
-  const [userLoading, setUserLoading] = useState(true)
-  const [modal, setModal] = useState(null)
-
-  useEffect(() => {
-    api.me().then(setCurrentUser).catch(() => {}).finally(() => setUserLoading(false))
-  }, [])
+function NavAuth() {
+  const { currentUser, clearAuth, requestAuth } = useAuth()
 
   async function handleLogout() {
     try { await api.logout() } catch {}
-    setCurrentUser(null)
+    clearAuth()
   }
 
+  if (currentUser) {
+    return (
+      <>
+        <span className="nav-user">{currentUser.username}</span>
+        <button className="nav-btn ghost" onClick={handleLogout}>Logout</button>
+      </>
+    )
+  }
+  return (
+    <>
+      <button className="nav-btn ghost" onClick={() => requestAuth('login')}>Login</button>
+      <button className="nav-btn primary" onClick={() => requestAuth('register')}>Register</button>
+    </>
+  )
+}
+
+export default function App() {
   return (
     <BrowserRouter>
-      <nav>
-        <NavLink to="/" className="brand" end>Stagefinder</NavLink>
-        <NavLink to="/favorites">Favorites</NavLink>
-        <div className="nav-right">
-          <a href="https://just-martin-really.github.io/stagefinder/" target="_blank" rel="noopener noreferrer" className="nav-docs">Docs</a>
-          {currentUser ? (
-            <>
-              <span className="nav-user">{currentUser.username}</span>
-              <button className="nav-btn ghost" onClick={handleLogout}>Logout</button>
-            </>
-          ) : (
-            <>
-              <button className="nav-btn ghost" onClick={() => setModal('login')}>Login</button>
-              <button className="nav-btn primary" onClick={() => setModal('register')}>Register</button>
-            </>
-          )}
-        </div>
-      </nav>
-      <Routes>
-        <Route path="/" element={<ArtistSearchPage currentUser={currentUser} userLoading={userLoading} />} />
-        <Route path="/artist/:mbid" element={<ArtistDetailPage currentUser={currentUser} userLoading={userLoading} />} />
-        <Route path="/favorites" element={<FavoritesPage currentUser={currentUser} userLoading={userLoading} />} />
-      </Routes>
-      {modal && (
-        <AuthModal
-          defaultTab={modal}
-          onSuccess={(user) => { setCurrentUser(user); setModal(null) }}
-          onClose={() => setModal(null)}
-        />
-      )}
+      <AuthProvider>
+        <nav>
+          <NavLink to="/" className="brand" end>Stagefinder</NavLink>
+          <NavLink to="/favorites">Favorites</NavLink>
+          <div className="nav-right">
+            <a href="https://just-martin-really.github.io/stagefinder/" target="_blank" rel="noopener noreferrer" className="nav-docs">Docs</a>
+            <NavAuth />
+          </div>
+        </nav>
+        <Routes>
+          <Route path="/" element={<ArtistSearchPage />} />
+          <Route path="/artist/:mbid" element={<ArtistDetailPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }
