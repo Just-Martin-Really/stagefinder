@@ -211,7 +211,7 @@ Setlist endpoints are public — no session required.
 |--------|------|------|--------|-------------|
 | `GET` | `/api/users/{userId}/feed` | required (owner) | 200 / 401 / 403 | Recent setlists from all favorited artists |
 
-Fetches page 1 of setlists from setlist.fm for each favorited artist, merges them into a single list, and sorts by event date descending. Artists whose setlist.fm call fails are silently skipped.
+Fetches page 1 of setlists from setlist.fm for each favorited artist, merges them into a single list, and sorts by event date descending. Per-favorite calls run in parallel on virtual threads, so wall time is dominated by the slowest upstream call rather than the sum. Artists whose setlist.fm call fails are silently skipped.
 
 ### Response — feed
 

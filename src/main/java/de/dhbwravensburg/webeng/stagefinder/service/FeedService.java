@@ -14,9 +14,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Service
@@ -36,22 +38,33 @@ public class FeedService {
 
         List<Favorite> favorites = favoriteRepository.findByUserId(userId);
 
-        return favorites.stream()
-                .flatMap(fav -> {
-                    try {
-                        return setlistFmService.getSetlists(fav.getArtist().getMbid(), 1).stream()
-                                .map(s -> toFeedItem(fav.getArtist().getName(), fav.getArtist().getMbid(), s));
-                    } catch (Exception e) {
-                        log.warn("Failed to fetch setlists for {}: {}", fav.getArtist().getMbid(), e.getMessage());
-                        return Stream.empty();
-                    }
-                })
-                .filter(item -> item.getEventDate() != null)
-                .sorted(Comparator.comparing(
-                        item -> LocalDate.parse(item.getEventDate(), SetlistDto.EVENT_DATE_FORMAT),
-                        Comparator.reverseOrder()
-                ))
+        List<FeedItemDto> items;
+        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
+            List<CompletableFuture<List<FeedItemDto>>> futures = favorites.stream()
+                    .map(fav -> CompletableFuture.supplyAsync(() -> fetchSetlistsFor(fav), executor))
+                    .toList();
+            items = futures.stream()
+                    .flatMap(f -> f.join().stream())
+                    .filter(item -> item.getEventDate() != null)
+                    .toList();
+        }
+
+        return items.stream()
+                .map(item -> Map.entry(LocalDate.parse(item.getEventDate(), SetlistDto.EVENT_DATE_FORMAT), item))
+                .sorted(Map.Entry.<LocalDate, FeedItemDto>comparingByKey().reversed())
+                .map(Map.Entry::getValue)
                 .toList();
+    }
+
+    private List<FeedItemDto> fetchSetlistsFor(Favorite fav) {
+        try {
+            return setlistFmService.getSetlists(fav.getArtist().getMbid(), 1).stream()
+                    .map(s -> toFeedItem(fav.getArtist().getName(), fav.getArtist().getMbid(), s))
+                    .toList();
+        } catch (Exception e) {
+            log.warn("Failed to fetch setlists for {}: {}", fav.getArtist().getMbid(), e.getMessage());
+            return List.of();
+        }
     }
 
     private FeedItemDto toFeedItem(String artistName, String artistMbid, SetlistDto s) {
