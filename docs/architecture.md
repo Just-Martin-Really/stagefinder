@@ -33,7 +33,7 @@ The frontend never calls setlist.fm directly. All external traffic goes through 
 | `domain/entity` | JPA entities — `User`, `Artist`, `Favorite` |
 | `domain/repository` | Spring Data repositories |
 | `adapter/setlistfm` | HTTP client for setlist.fm, response models, config |
-| `config` | `SecurityConfig` (auth rules, CORS, session policy) |
+| `config` | `SecurityConfig` (auth rules, CORS, session policy), `CacheConfig` (Caffeine cache for setlist.fm responses) |
 
 ---
 
@@ -59,6 +59,7 @@ The `(user_id, artist_id)` pair has a unique constraint — a user can only favo
 | Persistence | Spring Data JPA, PostgreSQL 17, Flyway |
 | Auth | Spring Security, BCrypt, Spring Session JDBC |
 | Validation | Bean Validation (`@Valid`) |
+| Cache | Spring Cache abstraction + Caffeine (in-memory) |
 | API docs | springdoc-openapi (Swagger UI) |
 | Frontend | React 19, Vite, React Router |
 | External API | setlist.fm REST API v1.0 |

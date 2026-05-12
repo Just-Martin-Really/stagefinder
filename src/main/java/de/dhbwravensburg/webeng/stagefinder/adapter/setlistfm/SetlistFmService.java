@@ -5,7 +5,9 @@ import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.SfmSet;
 import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.SfmSetlist;
 import de.dhbwravensburg.webeng.stagefinder.adapter.setlistfm.model.SfmSetlistResponse;
 import de.dhbwravensburg.webeng.stagefinder.api.dto.SetlistDto;
+import de.dhbwravensburg.webeng.stagefinder.config.CacheConfig;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -22,10 +24,12 @@ public class SetlistFmService {
         return client.searchArtists(query, page);
     }
 
+    @Cacheable(CacheConfig.ARTIST_CACHE)
     public SfmArtist getArtist(String mbid) {
         return client.getArtist(mbid);
     }
 
+    @Cacheable(value = CacheConfig.SETLISTS_CACHE, key = "#mbid + '-' + #page")
     public List<SetlistDto> getSetlists(String mbid, int page) {
         SfmSetlistResponse response = client.getSetlists(mbid, page);
         if (response.getSetlist() == null) {
