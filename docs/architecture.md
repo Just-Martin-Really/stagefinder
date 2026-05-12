@@ -44,10 +44,23 @@ User ──< Favorite >── Artist
 ```
 
 - **User** — username, email, BCrypt password hash; owns their favorites (mutations are ownership-guarded)
-- **Artist** — fetched from setlist.fm on first request, then cached by `mbid`
+- **Artist** — fetched from setlist.fm on first request, then persisted locally and looked up by `mbid` on subsequent requests
 - **Favorite** — join between one user and one artist, with an optional note and a creation timestamp
 
 The `(user_id, artist_id)` pair has a unique constraint — a user can only favorite an artist once.
+
+---
+
+## Caching
+
+setlist.fm responses are cached in-process with Caffeine. Configured in `CacheConfig`:
+
+| Cache | Methods | TTL | Max entries |
+|-------|---------|-----|-------------|
+| `setlistfm-artist` | `SetlistFmService.getArtist(mbid)` | 24h | 1000 |
+| `setlistfm-setlists` | `SetlistFmService.getSetlists(mbid, page)` | 15min | 5000 |
+
+`searchArtists` is intentionally not cached — query keyspace is too large and hit rate too low. The cache is gated on `spring.cache.type=caffeine`, which is the production default; the test profile sets `none` so mock stubs are not shadowed by cached results.
 
 ---
 
