@@ -102,4 +102,36 @@ class FeedServiceTest {
         assertThatThrownBy(() -> feedService.getFeed(99L, "alice"))
                 .isInstanceOf(NotFoundException.class);
     }
+
+    @Test
+    void getFeed_fetchesFavoritesInParallel() {
+        User user = stubUser();
+        Artist a1 = stubArtist("mbid-slow", "Slow");
+        Artist a2 = stubArtist("mbid-fast", "Fast");
+        Favorite f1 = Favorite.builder().id(1L).user(user).artist(a1).build();
+        Favorite f2 = Favorite.builder().id(2L).user(user).artist(a2).build();
+
+        SetlistDto slowSet = SetlistDto.builder().id("s1").eventDate("10-01-2024").songs(List.of("X")).build();
+        SetlistDto fastSet = SetlistDto.builder().id("s2").eventDate("20-03-2024").songs(List.of("Y")).build();
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(favoriteRepository.findByUserId(1L)).thenReturn(List.of(f1, f2));
+        when(setlistFmService.getSetlists("mbid-slow", 1)).thenAnswer(inv -> {
+            Thread.sleep(150);
+            return List.of(slowSet);
+        });
+        when(setlistFmService.getSetlists("mbid-fast", 1)).thenAnswer(inv -> {
+            Thread.sleep(150);
+            return List.of(fastSet);
+        });
+
+        long start = System.nanoTime();
+        List<FeedItemDto> feed = feedService.getFeed(1L, "alice");
+        long elapsedMs = (System.nanoTime() - start) / 1_000_000;
+
+        assertThat(feed).hasSize(2);
+        assertThat(feed.get(0).getArtistName()).isEqualTo("Fast");
+        assertThat(feed.get(1).getArtistName()).isEqualTo("Slow");
+        assertThat(elapsedMs).isLessThan(280);
+    }
 }
