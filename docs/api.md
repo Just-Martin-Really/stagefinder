@@ -173,7 +173,7 @@ Adding a favorite fetches the artist from setlist.fm if it isn't cached locally 
 
 Setlist endpoints are public — no session required.
 
-Per-artist responses are cached in-process via Caffeine: `GET /api/setlists/{mbid}` for up to 15 minutes, the artist lookup used internally for `/api/artists/mbid/{mbid}/stats` for up to 24 hours. Artist search (`/api/setlists/search`) is never cached — query keyspace is too large and hit rate too low.
+Per-artist responses are cached in-process with Caffeine. `GET /api/setlists/{mbid}` is cached for up to 15 minutes, keyed on `mbid` + `page`. The internal artist lookup (used when persisting a favorite or computing stats) is cached for up to 24 hours, keyed on `mbid`. Artist search (`/api/setlists/search`) is never cached — query keyspace is too large and hit rate too low. See [Architecture → Caching](architecture.md#caching) for the full configuration.
 
 ### Response — artist search
 
