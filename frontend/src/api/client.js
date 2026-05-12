@@ -1,11 +1,21 @@
 const BASE = '/api'
 
+let unauthorizedHandler = null
+
+export function setUnauthorizedHandler(fn) {
+  unauthorizedHandler = fn
+}
+
 async function request(path, options = {}) {
+  const { skipAuthHandler, ...fetchOpts } = options
   const res = await fetch(`${BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json', ...options.headers },
-    ...options,
+    headers: { 'Content-Type': 'application/json', ...fetchOpts.headers },
+    ...fetchOpts,
   })
   if (!res.ok) {
+    if (res.status === 401 && !skipAuthHandler && unauthorizedHandler) {
+      unauthorizedHandler()
+    }
     const body = await res.json().catch(() => ({}))
     throw Object.assign(new Error(body.message ?? res.statusText), { status: res.status, body })
   }
@@ -17,7 +27,7 @@ export const api = {
   // Auth
   login:    (data) => request('/auth/login',  { method: 'POST', body: JSON.stringify(data) }),
   logout:   ()     => request('/auth/logout', { method: 'POST' }),
-  me:       ()     => request('/auth/me'),
+  me:       (opts) => request('/auth/me', opts),
   register: (data) => request('/users',       { method: 'POST', body: JSON.stringify(data) }),
 
   // Artists / setlist.fm
