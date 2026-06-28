@@ -42,15 +42,15 @@ Or use an existing local PostgreSQL — create a database and user that match yo
 cp .env.example .env
 ```
 
-Open `.env` and set at minimum:
+Open `.env` and set the one required value:
 
 ```
 SETLISTFM_API_KEY=your_key
-DB_USERNAME=stagefinder
-DB_PASSWORD=stagefinder
 ```
 
-See [Environment variables](environment.md) for the full list.
+The `DB_*` vars are optional and default to a local PostgreSQL at `localhost:5432`
+(database, user, and password all `stagefinder`). Set them only if your instance
+differs. See [Environment variables](environment.md) for the full list.
 
 ---
 

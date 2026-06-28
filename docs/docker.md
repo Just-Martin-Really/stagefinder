@@ -7,7 +7,7 @@
 ## Run with Docker Compose
 
 ```zsh
-cp .env.example .env   # set SETLISTFM_API_KEY, DB_USERNAME, DB_PASSWORD
+cp .env.example .env   # set SETLISTFM_API_KEY (DB_* vars are optional)
 docker compose up --build
 ```
 
