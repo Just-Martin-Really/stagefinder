@@ -78,7 +78,9 @@ Open **http://localhost:8080** — frontend and API both served from there.
 
 ```zsh
 cp .env.example .env
-# Set SETLISTFM_API_KEY and DB_* vars to point at a local PostgreSQL instance
+# Only SETLISTFM_API_KEY is required. The DB_* vars are optional and default to a
+# local PostgreSQL at localhost:5432 (database, user, and password all "stagefinder");
+# set them only if your instance differs.
 ```
 
 ### 2. Run the backend
@@ -141,14 +143,16 @@ set -a && source .env && set +a
 ./mvnw test
 ```
 
-**47 tests** across four layers:
+**64 tests** across five layers:
 
-| Layer          | Classes                                                                        | Tests |
-|----------------|--------------------------------------------------------------------------------|-------|
-| Unit (service) | `UserServiceTest`, `FavoriteServiceTest`, `ArtistServiceTest`                  | 15    |
-| Unit (adapter) | `SetlistFmServiceTest`                                                         | 4     |
-| Integration    | `UserControllerIT`, `FavoriteControllerIT`, `AuthControllerIT`, `SetlistControllerIT` | 27 |
-| Smoke          | `StagefinderApplicationTests`                                                  | 1     |
+| Layer          | Classes                                                                                            | Tests |
+|----------------|----------------------------------------------------------------------------------------------------|-------|
+| Unit (service) | `UserServiceTest`, `FavoriteServiceTest`, `ArtistServiceTest`, `FeedServiceTest`, `ArtistStatsServiceTest` | 28 |
+| Unit (adapter) | `SetlistFmServiceTest`, `SetlistFmCacheTest`                                                        | 7     |
+| Unit (DTO)     | `PasswordToStringTest`                                                                              | 3     |
+| Integration    | `AuthControllerIT`, `UserControllerIT`, `FavoriteControllerIT`, `SetlistControllerIT`              | 24    |
+| Smoke          | `StagefinderApplicationTests`                                                                       | 1     |
+| Live (skipped) | `SetlistFmLiveIntegrationTest`                                                                      | 1     |
 
 The `SetlistFmLiveIntegrationTest` is opt-in and skipped by default:
 
